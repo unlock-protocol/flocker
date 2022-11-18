@@ -14,6 +14,7 @@ import { useRouter } from "next/router";
 import { toast } from "react-hot-toast";
 import { FiExternalLink as ExternalLinkIcon } from "react-icons/fi";
 import { minifyAddress } from "../utils";
+import { LockAddress } from "./LockAddress";
 
 export function ContractDeployBox() {
   const { user, storage } = useAuth();
@@ -98,22 +99,14 @@ export function ContractDeployBox() {
         sitekey={app.recaptchaKey}
         size="invisible"
       />
+
       {lockContract ? (
-        <div className="grid gap-6">
-          <div className="p-2 space-y-2 bg-white rounded-lg shadow-md ">
-            <div className="font-bold">{username}</div>
-            <a
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-2 py-0.5 bg-blue-50 rounded overflow-ellipsis hover:bg-blue-100"
-              href={networks[network]?.explorer?.urls?.address?.(
-                lockContract.address
-              )}
-            >
-              {minifyAddress(lockContract.address)} on block explorer
-              <ExternalLinkIcon />
-            </a>
-          </div>
+        <div className="inset-0 grid gap-2 p-4 bg-white shadow-2xl rounded-xl shadow-blue-200">
+          <div className="font-bold">{username}</div>
+          <LockAddress
+            lockAddress={lockContract.address}
+            network={lockContract.network}
+          />
           <Button
             onClick={(event) => {
               event.preventDefault();
@@ -122,7 +115,7 @@ export function ContractDeployBox() {
               );
             }}
           >
-            Update Attributes
+            Edit Attributes
           </Button>
         </div>
       ) : (
