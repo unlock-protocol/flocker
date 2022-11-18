@@ -118,7 +118,7 @@ export function ContractDeployBox() {
               );
             }}
           >
-            Edit lock metadata
+            Update Attributes
           </Button>
         </div>
       ) : (
