@@ -23,7 +23,7 @@ export const createCheckoutURL = ({ network, lock }: Options) => {
     locks: {
       [lock]: {
         network,
-        emailRequired: true,
+        emailRequired: false,
       },
     },
     pessimistic: true,
