@@ -23,6 +23,7 @@
     "ethers": "^5.7.2",
     "font-color-contrast": "^11.1.0",
     "next": "13.0.3",
+    "next-seo": "^5.14.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-google-recaptcha": "^2.1.0",
@@ -34,6 +35,7 @@
     "tailwind-merge": "^1.8.0",
     "twitter-api-v2": "^1.12.9",
     "typescript": "4.8.4",
+    "urlpattern-polyfill": "^6.0.2",
     "use-local-storage-state": "^18.1.1",
     "wagmi": "^0.8.3"
   },

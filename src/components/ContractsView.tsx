@@ -19,6 +19,10 @@ export function ContractsView({ user }: Props) {
       const locks = await subgraph.locks(
         {
           first: 10,
+          // @ts-expect-error - we don't export enums yet from unlock-js
+          orderBy: "createdAtBlock",
+          // @ts-expect-error - we don't export enums yet from unlock-js
+          orderDirection: "desc",
           where: {
             lockManagers_contains: [user.toLowerCase()],
           },
@@ -27,8 +31,10 @@ export function ContractsView({ user }: Props) {
           networks: [app.defaultNetwork?.toString()],
         }
       );
-
       return locks;
+    },
+    {
+      refetchOnMount: true,
     }
   );
 

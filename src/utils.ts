@@ -119,3 +119,9 @@ export const formDataToTokenAttributes = (formData: MetadataFormData) => {
 export const minifyAddress = (address: string) => {
   return `${address.slice(0, 6)}...${address.slice(address.length - 6)}`;
 };
+
+export const ogUrl = (url: string | URL) => {
+  const og = new URL("/api/og", app.baseURL);
+  og.searchParams.append("url", url?.toString());
+  return og.toString();
+};

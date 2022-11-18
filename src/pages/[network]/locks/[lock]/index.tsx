@@ -3,7 +3,7 @@ import { NextPage, GetServerSideProps } from "next";
 import { ColumnLayout } from "../../../../components/ColumnLayout";
 import { LinkButton } from "../../../../components/LinkButton";
 import { app } from "../../../../config/app";
-import { createCheckoutURL, TokenData } from "../../../../utils";
+import { createCheckoutURL, ogUrl, TokenData } from "../../../../utils";
 import {
   SiSubstack as SubstackIcon,
   SiDiscord as DiscordIcon,
@@ -12,17 +12,27 @@ import {
 } from "react-icons/si";
 import { FiLink as LinkIcon } from "react-icons/fi";
 import NextImage from "next/image";
-import contrast from "font-color-contrast";
 import fontColorContrast from "font-color-contrast";
 import { Button } from "../../../../components/Button";
-import { useMemo } from "react";
-import Head from "next/head";
-
+import { NextSeo } from "next-seo";
+import { customizeSEO } from "../../../../config/seo";
+import "urlpattern-polyfill";
 interface Props {
   network: number;
   lock: string;
   tokenData: TokenData;
 }
+
+const getTwitterHandle = (link?: string) => {
+  try {
+    if (!link) {
+      return;
+    }
+    const pattern = new URLPattern("https://twitter.com/:username");
+    const matched = pattern.exec(link);
+    return matched?.pathname.groups.username;
+  } catch {}
+};
 
 const IndexPage: NextPage<Props> = ({ network, lock, tokenData }) => {
   const links = (tokenData.attributes || [])
@@ -50,6 +60,18 @@ const IndexPage: NextPage<Props> = ({ network, lock, tokenData }) => {
         backgroundColor: tokenData.background_color,
       }}
     >
+      <NextSeo
+        {...customizeSEO({
+          description: tokenData.description,
+          title: tokenData.name,
+          imagePath: ogUrl(new URL(`/${network}/locks/${lock}`, app.baseURL)),
+          twitter: {
+            handle: getTwitterHandle(links.twitter),
+            site: links.twitter,
+          },
+        })}
+        twitter={{}}
+      />
       <nav className="flex justify-end w-full max-w-2xl p-6 mx-auto">
         <Button
           style={{

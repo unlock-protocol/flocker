@@ -63,6 +63,8 @@ const NextPage: NextPage = () => {
             Try checkout
           </Button>
         </div>
+
+        <div className=""></div>
         <article className="prose">
           <h1>
             You now have your own membership list that can never be taken away

@@ -1,7 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { TwitterApi } from "twitter-api-v2";
+import { app } from "../../../config/app";
 
-const twitterClient = new TwitterApi(process.env.TWITTER_BEARER_TOKEN!);
+const twitterClient = new TwitterApi(app.twitterToken);
 const readOnlyClient = twitterClient.readOnly;
 
 const TwitterProfileHandler = async (

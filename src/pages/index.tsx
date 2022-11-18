@@ -4,11 +4,18 @@ import { Navigation } from "../components/Navigation";
 import { ColumnLayout } from "../components/ColumnLayout";
 import { ContractDeployBox } from "../components/ContractDeployBox";
 import { ContractsView } from "../components/ContractsView";
+import { NextSeo } from "next-seo";
+import { routes } from "../config/routes";
 
 export default function Home() {
   const { login, isAuthenticated, user } = useAuth();
   return (
     <div>
+      <NextSeo
+        title={routes.home.seo.title}
+        description={routes.home.seo.description}
+        openGraph={routes.home.seo.openGraph}
+      />
       <Navigation />
       <ColumnLayout className="pt-12">
         <header className="box-border flex flex-col max-w-2xl gap-4 mx-auto">
