@@ -40,10 +40,9 @@ const NextPage: NextPage = () => {
     },
     {
       enabled: isAuthenticated && !!lock && !!network,
+      onError(error: Error) {},
       retry: false,
-      onError(error: Error) {
-        console.error(error);
-      },
+      refetchOnMount: true,
     }
   );
 

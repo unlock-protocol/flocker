@@ -1,166 +1,12 @@
-import { useCallback, useEffect, useRef, useState } from "react";
 import { Button } from "../components/Button";
-import { Input } from "../components/Input";
 import { useAuth } from "../hooks/useAuth";
-import { SiTwitter as TwitterIcon } from "react-icons/si";
-// @ts-expect-error - no typings.
-import ReCaptcha from "react-google-recaptcha";
-import { app } from "../config/app";
-import { useMutation } from "@tanstack/react-query";
-import { LocksmithService, WalletService } from "@unlock-protocol/unlock-js";
 import { Navigation } from "../components/Navigation";
-import { networks } from "@unlock-protocol/networks";
-import { ethers } from "ethers";
-import { useRouter } from "next/router";
 import { ColumnLayout } from "../components/ColumnLayout";
-import { toast } from "react-hot-toast";
-import { FiExternalLink as ExternalLinkIcon } from "react-icons/fi";
-import { minifyAddress } from "../utils";
-
-export function ContractDeployBox() {
-  const { user, storage } = useAuth();
-  const [username, setUsername] = useState("");
-  const [network] = useState(app.defaultNetwork);
-  const isDeployDisabled = !(username.length >= 2);
-  const router = useRouter();
-  const recaptchaRef = useRef<any>();
-  const {
-    isLoading: isContractDeploying,
-    mutate: deployContract,
-    data: lockContract,
-  } = useMutation({
-    mutationKey: ["contract", username],
-    mutationFn: async (
-      options: Parameters<
-        InstanceType<typeof LocksmithService>["createLockContract"]
-      >[2]
-    ) => {
-      const reCaptchaValue = await recaptchaRef.current?.executeAsync();
-      const walletService = new WalletService(networks);
-      const provider = walletService.providerForNetwork(network);
-
-      const response = await storage.createLockContract(
-        network,
-        reCaptchaValue!,
-        options
-      );
-      const { transactionHash } = response.data;
-
-      if (!transactionHash) {
-        return {
-          address: null,
-          network,
-          status: -1,
-        };
-      }
-
-      await walletService.connect(provider, ethers.Wallet.createRandom());
-      const contract = await walletService.getUnlockContract();
-      const { logs, status } = await provider.waitForTransaction(
-        transactionHash
-      );
-
-      const parser = contract.interface;
-
-      const newLockEvent = logs
-        .map((log) => {
-          try {
-            // ignore events that we can not parse
-            return parser.parseLog(log);
-          } catch {
-            return null;
-          }
-        })
-        .filter((event) => event && event.name === "NewLock")[0];
-
-      if (!newLockEvent) {
-        return {
-          address: null,
-          network,
-          status,
-        };
-      }
-
-      return {
-        address: newLockEvent.args.newLockAddress,
-        network,
-        status,
-      };
-    },
-    onError(error: Error) {
-      console.error(error);
-      toast.error(error?.message);
-    },
-  });
-
-  return (
-    <div>
-      <ReCaptcha
-        ref={recaptchaRef}
-        sitekey={app.recaptchaKey}
-        size="invisible"
-      />
-      {lockContract ? (
-        <div className="grid gap-6">
-          <div className="p-2 space-y-2 bg-white rounded-lg shadow-md ">
-            <div className="font-bold">{username}</div>
-            <a
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-2 py-0.5 bg-blue-50 rounded overflow-ellipsis hover:bg-blue-100"
-              href={networks[network]?.explorer?.urls?.address?.(
-                lockContract.address
-              )}
-            >
-              {minifyAddress(lockContract.address)} on block explorer
-              <ExternalLinkIcon />
-            </a>
-          </div>
-          <Button
-            onClick={(event) => {
-              event.preventDefault();
-              router.push(
-                `/${network}/locks/${lockContract.address}/edit?username=${username}`
-              );
-            }}
-          >
-            Update Attributes
-          </Button>
-        </div>
-      ) : (
-        <div className="grid gap-6">
-          <Input
-            label="Your twitter username"
-            icon={<TwitterIcon size={20} />}
-            value={username}
-            disabled={isContractDeploying}
-            onChange={(event) => {
-              event.preventDefault();
-              const value = event.target.value;
-              setUsername(value);
-            }}
-          />
-          <Button
-            loading={isContractDeploying}
-            disabled={isDeployDisabled}
-            onClick={() => {
-              deployContract({
-                creator: user,
-                name: username,
-                keyPrice: "0",
-              });
-            }}
-          >
-            Deploy membership contract
-          </Button>
-        </div>
-      )}
-    </div>
-  );
-}
+import { ContractDeployBox } from "../components/ContractDeployBox";
+import { ContractsView } from "../components/ContractsView";
 
 export default function Home() {
-  const { login, isAuthenticated } = useAuth();
+  const { login, isAuthenticated, user } = useAuth();
   return (
     <div>
       <Navigation />
@@ -188,6 +34,7 @@ export default function Home() {
               </Button>
             )}
           </div>
+          {isAuthenticated && <ContractsView user={user} />}
         </div>
       </ColumnLayout>
     </div>

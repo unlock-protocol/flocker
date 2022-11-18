@@ -11,8 +11,9 @@ const [_, setUser] = createLocalStorageValue("user");
 export const client = axios.create();
 
 client.interceptors.request.use((config) => {
-  const accessToken = getAccessToken();
-  if (accessToken) {
+  let accessToken = getAccessToken();
+  const refreshToken = getRefreshToken();
+  if (accessToken && refreshToken) {
     config.headers = {
       ...config.headers,
       Authorization: `Bearer ${accessToken}`,
@@ -43,15 +44,12 @@ client.interceptors.response.use(
         }
 
         const { accessToken, walletAddress } = response.data;
-
-        if (accessToken && walletAddress) {
-          setAccessToken(accessToken);
-          setUser(walletAddress);
-          axios.defaults.headers.common[
-            "Authorization"
-          ] = `Bearer ${accessToken}`;
-          return client(originalConfig);
-        }
+        setAccessToken(accessToken);
+        setUser(walletAddress);
+        axios.defaults.headers.common[
+          "Authorization"
+        ] = `Bearer ${accessToken}`;
+        return client(originalConfig);
       } catch (_error: any) {
         if (_error.response && _error.response.data) {
           return Promise.reject(_error.response.data);
