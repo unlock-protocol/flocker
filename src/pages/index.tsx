@@ -177,7 +177,7 @@ export default function Home() {
                   login();
                 }}
               >
-                Login to deploy membership Contract
+                Get started
               </Button>
             )}
           </div>
