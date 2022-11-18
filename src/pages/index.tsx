@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Button } from "../components/Button";
 import { useAuth } from "../hooks/useAuth";
 import { Navigation } from "../components/Navigation";
@@ -6,9 +7,11 @@ import { ContractDeployBox } from "../components/ContractDeployBox";
 import { ContractsView } from "../components/ContractsView";
 import { NextSeo } from "next-seo";
 import { routes } from "../config/routes";
+import { SelectTwitterProfile } from "../components/SelectTwitterProfile";
 
 export default function Home() {
   const { login, isAuthenticated, user } = useAuth();
+  const [twitterProfile, setTwitterProfile] = useState(null);
   return (
     <div>
       <NextSeo
@@ -30,8 +33,11 @@ export default function Home() {
         </header>
         <div className="w-full max-w-2xl mx-auto">
           <div className="grid gap-6 mt-6">
-            {isAuthenticated && <ContractDeployBox />}
-            {!isAuthenticated && (
+            {!twitterProfile && (
+              <SelectTwitterProfile setTwitterProfile={setTwitterProfile} />
+            )}
+            {twitterProfile && isAuthenticated && <ContractDeployBox />}
+            {twitterProfile && !isAuthenticated && (
               <Button
                 onClick={() => {
                   login();
@@ -41,7 +47,7 @@ export default function Home() {
               </Button>
             )}
           </div>
-          {isAuthenticated && <ContractsView user={user} />}
+          {twitterProfile && isAuthenticated && <ContractsView user={user} />}
         </div>
       </ColumnLayout>
     </div>
