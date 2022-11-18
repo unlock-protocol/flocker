@@ -16,21 +16,26 @@ export function ContractsView({ user }: Props) {
     ["locks", user],
     async () => {
       const subgraph = new SubgraphService(networks);
-      const locks = await subgraph.locks(
-        {
-          first: 10,
-          // @ts-expect-error - we don't export enums yet from unlock-js
-          orderBy: "createdAtBlock",
-          // @ts-expect-error - we don't export enums yet from unlock-js
-          orderDirection: "desc",
-          where: {
-            lockManagers_contains: [user.toLowerCase()],
+      const locks = (
+        await subgraph.locks(
+          {
+            first: 10,
+            // @ts-expect-error - we don't export enums yet from unlock-js
+            orderBy: "createdAtBlock",
+            // @ts-expect-error - we don't export enums yet from unlock-js
+            orderDirection: "desc",
+            where: {
+              lockManagers_contains: [user.toLowerCase()],
+            },
           },
-        },
-        {
-          networks: [app.defaultNetwork?.toString()],
-        }
-      );
+          {
+            networks: [app.defaultNetwork?.toString()],
+          }
+        )
+      ).filter((lock) => {
+        return lock.name?.startsWith("@");
+      });
+
       return locks;
     },
     {
@@ -41,7 +46,7 @@ export function ContractsView({ user }: Props) {
   return (
     <div>
       {isLocksLoading && <LoadingIcon />}
-      {!isLocksLoading && (
+      {!isLocksLoading && locks && locks?.length > 0 && (
         <div className="pt-6">
           <h4 className="mb-4 font-bold"> Previous contracts </h4>
           <div className="grid gap-6 sm:grid-cols-2">

@@ -7,7 +7,7 @@ import { SiTwitter as TwitterIcon } from "react-icons/si";
 import ReCaptcha from "react-google-recaptcha";
 import { app } from "../config/app";
 import { useMutation } from "@tanstack/react-query";
-import { LocksmithService, WalletService } from "@unlock-protocol/unlock-js";
+import { LocksmithService, Web3Service } from "@unlock-protocol/unlock-js";
 import { networks } from "@unlock-protocol/networks";
 import { ethers } from "ethers";
 import { useRouter } from "next/router";
@@ -35,8 +35,12 @@ export function ContractDeployBox() {
       >[2]
     ) => {
       const reCaptchaValue = await recaptchaRef.current?.executeAsync();
-      const walletService = new WalletService(networks);
-      const provider = walletService.providerForNetwork(network);
+      const web3Service = new Web3Service(networks);
+      const provider = web3Service.providerForNetwork(network);
+
+      // First get the proper username
+      // And fail if it is not correct!
+      console.log(networks[network].unlockAddress);
 
       const response = await storage.createLockContract(
         network,
@@ -52,9 +56,10 @@ export function ContractDeployBox() {
           status: -1,
         };
       }
-
-      await walletService.connect(provider, ethers.Wallet.createRandom());
-      const contract = await walletService.getUnlockContract();
+      const contract = await web3Service.getUnlockContract(
+        networks[network].unlockAddress,
+        provider
+      );
       const { logs, status } = await provider.waitForTransaction(
         transactionHash
       );
