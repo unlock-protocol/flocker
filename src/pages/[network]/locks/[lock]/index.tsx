@@ -2,54 +2,134 @@ import { LocksmithService } from "@unlock-protocol/unlock-js";
 import { NextPage, GetServerSideProps } from "next";
 import { ColumnLayout } from "../../../../components/ColumnLayout";
 import { LinkButton } from "../../../../components/LinkButton";
-import { Navigation } from "../../../../components/Navigation";
 import { app } from "../../../../config/app";
-import { MetadataFormData, toFormData, TokenData } from "../../../../utils";
+import { createCheckoutURL, TokenData } from "../../../../utils";
 import {
   SiSubstack as SubstackIcon,
   SiDiscord as DiscordIcon,
   SiInstagram as InstagramIcon,
   SiTwitter as TwitterIcon,
 } from "react-icons/si";
+import { FiLink as LinkIcon } from "react-icons/fi";
+import NextImage from "next/image";
+import contrast from "font-color-contrast";
+import fontColorContrast from "font-color-contrast";
+import { Button } from "../../../../components/Button";
+import { useMemo } from "react";
 
 interface Props {
   network: number;
   lock: string;
-  metadata: MetadataFormData;
+  tokenData: TokenData;
 }
 
-const IndexPage: NextPage<Props> = ({ network, lock, metadata }) => {
+const IndexPage: NextPage<Props> = ({ network, lock, tokenData }) => {
+  const links = (tokenData.attributes || [])
+    .filter(
+      (item) =>
+        typeof item.value === "string" &&
+        !item.max_value &&
+        item.value.startsWith("https://")
+    )
+    .reduce<Record<string, string>>((acc, item) => {
+      acc[item.trait_type] = item.value?.toString();
+      return acc;
+    }, {});
+
+  const contrast = fontColorContrast(tokenData.background_color || "#FFFFFF");
+  const checkoutURL = createCheckoutURL({
+    network,
+    lock,
+  });
+
   return (
-    <div>
-      <Navigation />
-      <ColumnLayout className="mt-12">
-        <div className="grid gap-6">
-          {metadata.website && (
-            <LinkButton
-              label="Website"
-              icon={<InstagramIcon />}
-              href={metadata.website}
-            />
+    <div
+      className="h-screen"
+      style={{
+        backgroundColor: tokenData.background_color,
+      }}
+    >
+      <nav className="flex justify-end w-full max-w-2xl p-6 mx-auto">
+        <Button
+          style={{
+            backgroundColor: contrast,
+          }}
+          onClick={(event) => {
+            event.preventDefault();
+            window.open(checkoutURL.toString());
+          }}
+        >
+          Claim membership
+        </Button>
+      </nav>
+      <ColumnLayout className="max-w-xl pt-8">
+        <header className="flex flex-col items-center gap-4 text-center">
+          <div className="flex flex-col items-center gap-2">
+            {tokenData.image && (
+              <NextImage
+                src={tokenData.image}
+                height={120}
+                width={120}
+                className="border border-gray-100 rounded-full"
+                alt={tokenData.name}
+              />
+            )}
+            {tokenData.name && (
+              <h1
+                style={{
+                  color: contrast,
+                }}
+                className="text-xl font-bold sm:text-3xl"
+              >
+                {tokenData.name}
+              </h1>
+            )}
+          </div>
+          {tokenData.description && (
+            <p
+              style={{
+                color: contrast,
+              }}
+              className="text-lg"
+            >
+              {tokenData.description}
+            </p>
           )}
-          {metadata.twitter && (
+        </header>
+        <div className="grid gap-6 pt-16">
+          {links.twitter && (
             <LinkButton
-              label="Twitter"
               icon={<TwitterIcon />}
-              href={metadata.twitter}
+              href={links.twitter}
+              label="Follow me on twitter"
             />
           )}
-          {metadata.instagram && (
+          {links.website && (
             <LinkButton
-              label="Instagram"
+              icon={<LinkIcon />}
+              href={links.twitter}
+              label="My personal website"
+            />
+          )}
+          {links.substack && (
+            <LinkButton
+              icon={<SubstackIcon />}
+              href={links.substack}
+              label="Read my blog posts"
+            />
+          )}
+          {links.instagram && (
+            <LinkButton
               icon={<InstagramIcon />}
-              href={metadata.instagram}
+              href={links.instagram}
+              label="Check out instagram"
             />
           )}
-          {metadata.discord && (
+          {links.discord && (
             <LinkButton
-              label="Discord"
               icon={<DiscordIcon />}
-              href={metadata.discord}
+              href={links.discord}
+              label="Join my discord"
             />
           )}
         </div>
@@ -64,12 +144,11 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     const network = Number(ctx.query.network);
     const service = new LocksmithService(undefined, app.locksmith);
     const response = await service.lockMetadata(network, lock!);
-    const data = response.data;
-    const metadata = toFormData(data as TokenData);
+    const tokenData = response.data;
     return {
       props: {
         // Serialize undefined into null
-        metadata: Object.entries(metadata).reduce((acc, [key, value]) => {
+        tokenData: Object.entries(tokenData).reduce((acc, [key, value]) => {
           acc[key] = value || null;
           return acc;
         }, {} as any),

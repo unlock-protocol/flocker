@@ -14,6 +14,8 @@ import { ethers } from "ethers";
 import { useRouter } from "next/router";
 import { ColumnLayout } from "../components/ColumnLayout";
 import { toast } from "react-hot-toast";
+import { FiExternalLink as ExternalLinkIcon } from "react-icons/fi";
+import { minifyAddress } from "../utils";
 
 export function ContractDeployBox() {
   const { user, storage } = useAuth();
@@ -100,14 +102,18 @@ export function ContractDeployBox() {
       />
       {lockContract ? (
         <div className="grid gap-6">
-          <div className="p-2 bg-white rounded-lg shadow-md">
-            <div>{username}</div>
+          <div className="p-2 space-y-2 bg-white rounded-lg shadow-md ">
+            <div className="font-bold">{username}</div>
             <a
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-2 py-0.5 bg-blue-50 rounded overflow-ellipsis hover:bg-blue-100"
               href={networks[network]?.explorer?.urls?.address?.(
                 lockContract.address
               )}
             >
-              {lockContract.address}
+              {minifyAddress(lockContract.address)} on block explorer
+              <ExternalLinkIcon />
             </a>
           </div>
           <Button
@@ -127,6 +133,7 @@ export function ContractDeployBox() {
             label="Your twitter username"
             icon={<TwitterIcon size={20} />}
             value={username}
+            disabled={isContractDeploying}
             onChange={(event) => {
               event.preventDefault();
               const value = event.target.value;
@@ -157,7 +164,7 @@ export default function Home() {
   return (
     <div>
       <Navigation />
-      <ColumnLayout className="mt-12">
+      <ColumnLayout className="pt-12">
         <header className="box-border flex flex-col max-w-2xl gap-4 mx-auto">
           <div className="text-3xl font-extrabold sm:text-5xl">
             <div>Break free from twitter.</div>

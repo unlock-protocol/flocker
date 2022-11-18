@@ -23,8 +23,8 @@ const NextPage: NextPage = () => {
   return (
     <div>
       <Navigation />
-      <ColumnLayout className="mt-12">
-        <header className="box-border flex flex-col max-w-2xl gap-4 mx-auto">
+      <ColumnLayout className="pt-12">
+        <header className="box-border flex flex-col max-w-2xl gap-4 pb-6 mx-auto">
           <h1 className="text-3xl font-bold sm:text-5xl">What&apos; next?</h1>
           <div className="block text-lg text-gray-500 sm:text-xl ">
             Share this link with your followers for them to claim your

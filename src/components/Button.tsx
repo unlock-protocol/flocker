@@ -20,7 +20,7 @@ export const Button = forwardRef(
   (props: Props, ref: ForwardedRef<HTMLButtonElement>) => {
     const { children, icon, loading, disabled, ...rest } = props;
     const buttonClassName =
-      "inline-flex bg-blue-500 hover:bg-blue-600 disabled:hover:bg-blue-500 disabled:hover:bg-opacity-75 rounded-full justify-center cursor-pointer text-white font-medium px-4 py-2 items-center gap-2 disabled:bg-opacity-75 disabled:cursor-not-allowed";
+      "inline-flex bg-blue-500 hover:bg-opacity-75 disabled:hover:bg-opacity-75 disabled:hover:bg-opacity-75 rounded-full justify-center cursor-pointer text-white font-medium px-4 py-2 items-center gap-2 disabled:bg-opacity-75 disabled:cursor-not-allowed";
 
     return (
       <button

@@ -58,28 +58,20 @@ export interface TokenData {
 }
 
 export const toFormData = (props: TokenData) => {
-  const { attributes, name, description, background_color } = props;
+  const { attributes, name, description, background_color, youtube_url } =
+    props;
   const allItems = attributes?.filter(
     (item) => typeof item.value === "string" && !item.max_value
   );
-
   const record = allItems?.reduce<Record<string, string>>((acc, item) => {
     acc[item.trait_type] = item.value?.toString();
     return acc;
   }, {});
 
-  const items = allItems?.filter(
-    (item) =>
-      !["instagram", "website", "substack", "discord", "twitter"].includes(
-        item.trait_type.toLowerCase()
-      )
-  );
-
+  const website = record?.website;
   const discord = record?.discord;
   const substack = record?.substack;
-  const website = record?.website;
   const instagram = record?.instagram;
-  const twitter = record?.twitter;
 
   return {
     name,
@@ -88,32 +80,28 @@ export const toFormData = (props: TokenData) => {
     substack,
     website,
     instagram,
-    twitter,
-    items,
+    youtube_url,
     background_color,
   };
 };
 
 export interface MetadataFormData {
-  twitter?: string;
-  description: string;
   website?: string;
   instagram?: string;
   substack?: string;
   discord?: string;
+  youtube_url?: string;
   background_color?: string;
-  items?: Attribute[];
 }
 
 export const formDataToTokenAttributes = (formData: MetadataFormData) => {
-  const attributes: Attribute[] = [];
-  const { items, ...rest } = formData;
-  const known = Object.entries(rest)
+  const { background_color, ...rest } = formData;
+  const attributes = Object.entries(rest)
     .filter(
       ([key, value]) =>
         key &&
         value &&
-        ["instagram", "website", "substack", "discord", "twitter"].includes(key)
+        ["website", "substack", "discord", "instagram"].includes(key)
     )
     .map(
       ([key, value]) =>
@@ -122,15 +110,9 @@ export const formDataToTokenAttributes = (formData: MetadataFormData) => {
           trait_type: key,
         } as Attribute)
     );
-
-  if (known) {
-    attributes.push(...known);
-  }
-
-  if (items) {
-    attributes.push(...items);
-  }
-  console.log(rest, known, items);
-
   return attributes;
+};
+
+export const minifyAddress = (address: string) => {
+  return `${address.slice(0, 6)}...${address.slice(address.length - 6)}`;
 };

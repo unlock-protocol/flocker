@@ -11,7 +11,7 @@ export const LinkButton = ({ href, icon, label }: Props) => {
     <a
       target="_blank"
       rel="noopener noreferrer"
-      className="flex items-center gap-2 p-2 bg-white rounded shadow-sm hover:bg-gray-50"
+      className="flex items-center justify-center gap-6 px-4 py-2 text-base font-medium bg-white rounded-lg shadow-sm hover:bg-gray-50"
       href={href}
     >
       {icon}
