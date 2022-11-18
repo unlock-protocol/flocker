@@ -36,31 +36,34 @@ export function ContractsView({ user }: Props) {
     <div>
       {isLocksLoading && <LoadingIcon />}
       {!isLocksLoading && (
-        <div className="grid gap-6 pt-6 sm:grid-cols-2">
-          {locks?.map((lock) => (
-            <div
-              className="grid gap-6 p-4 bg-white rounded-lg shadow-sm"
-              key={lock.address}
-            >
-              <div>
-                <h4 className="text-lg font-bold">{lock.name}</h4>
-                <LockAddress
-                  lockAddress={lock.address}
-                  network={app.defaultNetwork}
-                />
-              </div>
-              <Button
-                onClick={(event) => {
-                  event.preventDefault();
-                  router.push(
-                    `/${app.defaultNetwork}/locks/${lock.address}/edit?username=${lock.name}`
-                  );
-                }}
+        <div className="pt-6">
+          <h4 className="mb-4 font-bold"> Previous contracts </h4>
+          <div className="grid gap-6 sm:grid-cols-2">
+            {locks?.map((lock) => (
+              <div
+                className="grid gap-6 p-4 bg-white rounded-lg shadow-sm"
+                key={lock.address}
               >
-                Edit Attributes
-              </Button>
-            </div>
-          ))}
+                <div>
+                  <h4 className="text-lg font-bold">{lock.name}</h4>
+                  <LockAddress
+                    lockAddress={lock.address}
+                    network={app.defaultNetwork}
+                  />
+                </div>
+                <Button
+                  onClick={(event) => {
+                    event.preventDefault();
+                    router.push(
+                      `/${app.defaultNetwork}/locks/${lock.address}/edit?username=${lock.name}`
+                    );
+                  }}
+                >
+                  Edit Attributes
+                </Button>
+              </div>
+            ))}
+          </div>
         </div>
       )}
     </div>

@@ -27,9 +27,9 @@ client.interceptors.response.use(
   async (err) => {
     const originalConfig = err.config;
     const refreshToken = getRefreshToken();
-    if ([401, 403].includes(err.response?.status) && refreshToken) {
+    if ([401].includes(err.response?.status) && refreshToken) {
       try {
-        originalConfig._retry = true;
+        originalConfig.sent = true;
         const service = new LocksmithService(undefined, app.locksmith);
         const response = await service.refreshToken(undefined, {
           refreshToken,
@@ -46,9 +46,12 @@ client.interceptors.response.use(
         const { accessToken, walletAddress } = response.data;
         setAccessToken(accessToken);
         setUser(walletAddress);
-        axios.defaults.headers.common[
-          "Authorization"
-        ] = `Bearer ${accessToken}`;
+
+        originalConfig.headers = {
+          ...originalConfig.headers,
+          Authorization: `Bearer ${accessToken}`,
+        };
+
         return client(originalConfig);
       } catch (_error: any) {
         if (_error.response && _error.response.data) {

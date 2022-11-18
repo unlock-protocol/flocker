@@ -16,6 +16,7 @@ import contrast from "font-color-contrast";
 import fontColorContrast from "font-color-contrast";
 import { Button } from "../../../../components/Button";
 import { useMemo } from "react";
+import Head from "next/head";
 
 interface Props {
   network: number;
