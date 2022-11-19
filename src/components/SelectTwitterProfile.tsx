@@ -9,13 +9,15 @@ import { toast } from "react-hot-toast";
 import NextLink from "next/link";
 
 interface SelectTwitterProfileProps {
-  setTwitterProfile: any;
+  twitterUsername?: string;
+  setTwitterUsername: any;
 }
 
 export function SelectTwitterProfile({
-  setTwitterProfile,
+  twitterUsername,
+  setTwitterUsername,
 }: SelectTwitterProfileProps) {
-  const [username, setUsername] = useState("");
+  const [username, setUsername] = useState(twitterUsername);
 
   const {
     isLoading,
@@ -25,6 +27,26 @@ export function SelectTwitterProfile({
     mutationKey: ["username", username],
     mutationFn: async () => {
       // Get the Twitter handle and details!
+      const response = await fetch(`/api/twitter/${username}`, {
+        headers: {
+          "content-type": "application/json",
+        },
+      });
+
+      if (response.ok) {
+        const json = await response.json();
+        if (json.username) {
+          setTwitterUsername(json.username);
+        } else {
+          toast.error(
+            "This does not seem to be a valid Twitter profile. Please try again."
+          );
+        }
+      } else {
+        toast.error(
+          "We could not find this Twitter profile! Please try again."
+        );
+      }
     },
     onError(error: Error) {
       console.error(error);

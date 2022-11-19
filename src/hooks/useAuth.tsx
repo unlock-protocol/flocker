@@ -63,7 +63,11 @@ export function useAuth() {
     const onCode = async () => {
       setIsAuthenticating(true);
       try {
-        router.replace(window.location.pathname, undefined, {
+        // We just need to remove the code!
+        const url = new URL(window.location.toString());
+        url.searchParams.delete("code");
+        url.searchParams.delete("state");
+        router.replace(url.toString(), undefined, {
           shallow: true,
         });
         await authenticate(code);
@@ -75,10 +79,18 @@ export function useAuth() {
     onCode();
   }, [router, code, authenticate]);
 
-  const login = () => {
-    let url = new URL("https://app.unlock-protocol.com/checkout");
+  interface LoginParams {
+    [key: string]: string;
+  }
+
+  const login = (params: LoginParams = {}) => {
+    const url = new URL("https://app.unlock-protocol.com/checkout");
     url.searchParams.set("client_id", window.location.host);
-    url.searchParams.set("redirect_uri", window.location.href);
+    const redirectUri = new URL(window.location.href);
+    Object.keys(params).forEach((key) => {
+      redirectUri.searchParams.set(key, params[key]);
+    });
+    url.searchParams.set("redirect_uri", redirectUri.toString());
     window.location.href = url.toString();
   };
 

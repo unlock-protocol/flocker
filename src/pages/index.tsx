@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 import { Button } from "../components/Button";
 import { useAuth } from "../hooks/useAuth";
 import { Navigation } from "../components/Navigation";
@@ -11,7 +12,13 @@ import { SelectTwitterProfile } from "../components/SelectTwitterProfile";
 
 export default function Home() {
   const { login, isAuthenticated, user } = useAuth();
-  const [twitterProfile, setTwitterProfile] = useState(null);
+  const router = useRouter();
+  const [twitterUsername, setTwitterUsername] = useState<string>();
+
+  useEffect(() => {
+    setTwitterUsername(router.query?.twitterUsername?.toString());
+  }, [router.query?.twitterUsername]);
+
   return (
     <div>
       <NextSeo
@@ -33,21 +40,32 @@ export default function Home() {
         </header>
         <div className="w-full max-w-2xl mx-auto">
           <div className="grid gap-6 mt-6">
-            {!twitterProfile && (
-              <SelectTwitterProfile setTwitterProfile={setTwitterProfile} />
+            {!twitterUsername && (
+              <SelectTwitterProfile
+                twitterUsername={twitterUsername}
+                setTwitterUsername={setTwitterUsername}
+              />
             )}
-            {twitterProfile && isAuthenticated && <ContractDeployBox />}
-            {twitterProfile && !isAuthenticated && (
-              <Button
-                onClick={() => {
-                  login();
-                }}
-              >
-                Get started
-              </Button>
+            {twitterUsername && !isAuthenticated && (
+              <>
+                <p>
+                  Let's get you authenticated to deploy your membership
+                  contract!
+                </p>
+                <Button
+                  onClick={() => {
+                    login({ twitterUsername });
+                  }}
+                >
+                  Authenticate
+                </Button>
+              </>
+            )}
+            {twitterUsername && isAuthenticated && (
+              <ContractDeployBox twitterUsername={twitterUsername} />
             )}
           </div>
-          {twitterProfile && isAuthenticated && <ContractsView user={user} />}
+          {isAuthenticated && <ContractsView user={user} />}
         </div>
       </ColumnLayout>
     </div>

@@ -16,11 +16,13 @@ import { FiExternalLink as ExternalLinkIcon } from "react-icons/fi";
 import { minifyAddress } from "../utils";
 import { LockAddress } from "./LockAddress";
 
-export function ContractDeployBox() {
+interface ContractDeployBoxProps {
+  twitterUsername: string;
+}
+
+export function ContractDeployBox({ twitterUsername }: ContractDeployBoxProps) {
   const { user, storage } = useAuth();
-  const [username, setUsername] = useState("");
   const [network] = useState(app.defaultNetwork);
-  const isDeployDisabled = !(username.length >= 2);
   const router = useRouter();
   const recaptchaRef = useRef<any>();
   const {
@@ -28,7 +30,7 @@ export function ContractDeployBox() {
     mutate: deployContract,
     data: lockContract,
   } = useMutation({
-    mutationKey: ["contract", username],
+    mutationKey: ["contract", twitterUsername],
     mutationFn: async (
       options: Parameters<
         InstanceType<typeof LocksmithService>["createLockContract"]
@@ -37,10 +39,6 @@ export function ContractDeployBox() {
       const reCaptchaValue = await recaptchaRef.current?.executeAsync();
       const web3Service = new Web3Service(networks);
       const provider = web3Service.providerForNetwork(network);
-
-      // First get the proper username
-      // And fail if it is not correct!
-      console.log(networks[network].unlockAddress);
 
       const response = await storage.createLockContract(
         network,
@@ -107,7 +105,7 @@ export function ContractDeployBox() {
 
       {lockContract ? (
         <div className="inset-0 grid gap-2 p-4 bg-white shadow-2xl rounded-xl shadow-blue-200">
-          <div className="font-bold">{username}</div>
+          <div className="font-bold">{twitterUsername}</div>
           <LockAddress
             lockAddress={lockContract.address}
             network={lockContract.network}
@@ -116,7 +114,7 @@ export function ContractDeployBox() {
             onClick={(event) => {
               event.preventDefault();
               router.push(
-                `/${network}/locks/${lockContract.address}/edit?username=${username}`
+                `/${network}/locks/${lockContract.address}/edit?username=${twitterUsername}`
               );
             }}
           >
@@ -125,25 +123,14 @@ export function ContractDeployBox() {
         </div>
       ) : (
         <div className="grid gap-6">
-          <Input
-            label="Your twitter username"
-            icon={<TwitterIcon size={20} />}
-            value={username}
-            disabled={isContractDeploying}
-            onChange={(event) => {
-              event.preventDefault();
-              const value = event.target.value;
-              setUsername(value);
-            }}
-          />
+          <p>Are you ready?</p>
           <Button
             loading={isContractDeploying}
-            disabled={isDeployDisabled}
             onClick={() => {
               deployContract({
                 creator: user,
-                name: username,
-                keyPrice: "0",
+                name: `@${twitterUsername}`,
+                keyPrice: "0", // Free by default!
               });
             }}
           >
