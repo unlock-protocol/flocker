@@ -49,7 +49,7 @@ export default function Home() {
             {twitterUsername && !isAuthenticated && (
               <>
                 <p>
-                  Let's get you authenticated to deploy your membership
+                  Let&apos;s get you authenticated to deploy your membership
                   contract!
                 </p>
                 <Button

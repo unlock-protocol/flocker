@@ -1,13 +1,9 @@
-import { SiTwitter as TwitterIcon } from "react-icons/si";
 import { useState } from "react";
-import { useAuth } from "../hooks/useAuth";
 import { Button } from "./Button";
 import { Input } from "./Input";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "react-hot-toast";
-
-import NextLink from "next/link";
-
+import { FiAtSign } from "react-icons/fi";
 interface SelectTwitterProfileProps {
   twitterUsername?: string;
   setTwitterUsername: any;
@@ -59,7 +55,7 @@ export function SelectTwitterProfile({
       <div className="grid gap-6">
         <Input
           label="Your twitter username"
-          icon={<TwitterIcon size={20} />}
+          icon={<FiAtSign size={20} />}
           value={username}
           disabled={isLoading}
           onChange={(event) => {
@@ -70,7 +66,6 @@ export function SelectTwitterProfile({
         />
         <Button
           loading={isLoading}
-          disabled={isLoading}
           onClick={() => {
             retrieveProfile();
           }}

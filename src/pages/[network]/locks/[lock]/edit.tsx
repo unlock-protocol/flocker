@@ -65,6 +65,13 @@ const NextPage: NextPage = () => {
     async (formData: MetadataFormData) => {
       const attrs = formDataToTokenAttributes(formData);
       let twitter: Record<string, any> = {};
+      const attributes: Attribute[] = [
+        ...attrs,
+        {
+          trait_type: "twitter",
+          value: `https://twitter.com/${username}`,
+        },
+      ];
 
       const response = await fetch(`/api/twitter/${username}`, {
         headers: {
@@ -77,22 +84,22 @@ const NextPage: NextPage = () => {
         twitter = json;
       }
 
-      const attributes: Attribute[] = [
-        ...attrs,
-        {
-          trait_type: "twitter",
-          value: `https://twitter.com/${username}`,
-        },
-      ];
-
-      updateMetadata({
-        attributes,
-        name: twitter.name,
+      const metadata: TokenData = {
+        name: twitter.username,
+        attributes: attributes,
         description: twitter.description,
         image: twitter?.profile_image_url?.replace("_normal", "_400x400"),
-        background_color: formData.background_color,
-        youtube_url: formData.youtube_url,
-      });
+      };
+
+      if (formData.background_color) {
+        metadata.background_color = formData.background_color?.replace("#", "");
+      }
+
+      if (formData.youtube_url) {
+        metadata.youtube_url = formData.youtube_url;
+      }
+
+      updateMetadata(metadata);
     },
     [username, updateMetadata]
   );
