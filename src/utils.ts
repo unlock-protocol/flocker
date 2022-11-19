@@ -84,9 +84,7 @@ export const toFormData = (props: TokenData) => {
     website,
     instagram,
     youtube_url,
-    background_color: background_color?.startsWith("#")
-      ? background_color
-      : `#${background_color}`,
+    background_color,
   };
 };
 

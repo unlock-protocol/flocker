@@ -47,7 +47,12 @@ const IndexPage: NextPage<Props> = ({ network, lock, tokenData }) => {
       return acc;
     }, {});
 
-  const contrast = fontColorContrast(tokenData.background_color || "#FFFFFF");
+  const backgroundColor =
+    tokenData.background_color && tokenData.background_color?.startsWith("#")
+      ? tokenData.background_color
+      : `#${tokenData.background_color}`;
+
+  const contrast = fontColorContrast(backgroundColor || "#FFFFFF");
   const checkoutURL = createCheckoutURL({
     network,
     lock,
@@ -57,7 +62,7 @@ const IndexPage: NextPage<Props> = ({ network, lock, tokenData }) => {
     <div
       className="h-screen"
       style={{
-        backgroundColor: tokenData.background_color,
+        backgroundColor,
       }}
     >
       <NextSeo
@@ -70,12 +75,13 @@ const IndexPage: NextPage<Props> = ({ network, lock, tokenData }) => {
             site: links.twitter,
           },
         })}
-        twitter={{}}
       />
       <nav className="flex justify-end w-full max-w-2xl p-6 mx-auto">
-        <Button
+        <button
+          className="inline-flex items-center justify-center gap-2 px-4 py-2 font-medium rounded-full cursor-pointer hover:bg-opacity-75 disabled:hover:bg-opacity-75 disabled:bg-opacity-75 disabled:cursor-not-allowed"
           style={{
             backgroundColor: contrast,
+            color: fontColorContrast(contrast),
           }}
           onClick={(event) => {
             event.preventDefault();
@@ -83,7 +89,7 @@ const IndexPage: NextPage<Props> = ({ network, lock, tokenData }) => {
           }}
         >
           Claim membership
-        </Button>
+        </button>
       </nav>
       <ColumnLayout className="max-w-xl pt-8">
         <header className="flex flex-col items-center gap-4 text-center">

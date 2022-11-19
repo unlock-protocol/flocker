@@ -9,7 +9,6 @@ import {
   SiYoutube as YoutubeIcon,
 } from "react-icons/si";
 import { FiLink as LinkIcon } from "react-icons/fi";
-import { IoColorFill as BackgroundColorIcon } from "react-icons/io5";
 import { useFieldArray, useForm } from "react-hook-form";
 import { Input } from "../../../../components/Input";
 import { Button } from "../../../../components/Button";
@@ -23,6 +22,7 @@ import {
 import { useCallback, useEffect } from "react";
 import { Navigation } from "../../../../components/Navigation";
 import { ColumnLayout } from "../../../../components/ColumnLayout";
+import { FaHashtag as BackgroundColorIcon } from "react-icons/fa";
 
 const NextPage: NextPage = () => {
   const { isAuthenticated, storage } = useAuth();
@@ -173,7 +173,9 @@ const NextPage: NextPage = () => {
             {...register("background_color")}
             icon={<BackgroundColorIcon />}
             optional
-            placeholder="#000000"
+            maxLength={6}
+            minLength={6}
+            placeholder="000000"
             label="Background Color"
           />
           <Button loading={isUpdatingMetadata}>Continue</Button>
