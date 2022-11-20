@@ -29,14 +29,12 @@ export default function Home() {
       <Navigation />
       <ColumnLayout className="pt-12">
         <header className="box-border flex flex-col max-w-2xl gap-4 mx-auto">
-          <div className="text-3xl font-extrabold sm:text-5xl">
-            <div>Break free from twitter.</div>
-            <div>Connect with your audience without barriers. </div>
-          </div>
-          <div className="block text-lg text-gray-500 sm:text-xl ">
-            <div>Deploy your own membership contract in 5 minutes.</div>
-            <div> It doesn&apos;t take much. </div>
-          </div>
+          <h1 className="text-5xl font-extrabold">
+            Connect with your fans and followers nearly anywhere.
+          </h1>
+          <h2 className="block text-lg text-gray-500 sm:text-xl">
+            Create your own membership smart contract in five minutes.
+          </h2>
         </header>
         <div className="w-full max-w-2xl mx-auto">
           {isAuthenticated && !twitterUsername && <ContractsView user={user} />}
@@ -50,15 +48,14 @@ export default function Home() {
             {twitterUsername && !isAuthenticated && (
               <>
                 <p>
-                  Let&apos;s get you authenticated to deploy your membership
-                  contract!
+                  Let&apos;s get you set up to deploy your membership contract!
                 </p>
                 <Button
                   onClick={() => {
                     login({ twitterUsername });
                   }}
                 >
-                  Authenticate
+                  Continue
                 </Button>
               </>
             )}

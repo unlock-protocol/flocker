@@ -105,7 +105,6 @@ export function ContractDeployBox({ twitterUsername }: ContractDeployBoxProps) {
 
       {lockContract ? (
         <div className="inset-0 grid gap-2 p-4 bg-white shadow-2xl rounded-xl shadow-blue-200">
-          <div className="font-bold">{twitterUsername}</div>
           <LockAddress
             lockAddress={lockContract.address}
             network={lockContract.network}
@@ -118,7 +117,7 @@ export function ContractDeployBox({ twitterUsername }: ContractDeployBoxProps) {
               );
             }}
           >
-            Edit Attributes
+            Success. Now, let folks know where else they can find you...
           </Button>
         </div>
       ) : (

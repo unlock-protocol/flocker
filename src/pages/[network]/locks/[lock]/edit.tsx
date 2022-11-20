@@ -97,7 +97,6 @@ const NextPage: NextPage = () => {
           value: `https://twitter.com/${username}`,
         },
       ];
-
       const metadata: TokenData = {
         name: twitterProfile.username,
         attributes: attributes,
@@ -118,7 +117,7 @@ const NextPage: NextPage = () => {
 
       updateMetadata(metadata);
     },
-    [username, updateMetadata]
+    [username, updateMetadata, twitterProfile]
   );
 
   const { handleSubmit, register, reset } = useForm<MetadataFormData>({

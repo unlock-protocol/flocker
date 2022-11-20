@@ -6,7 +6,7 @@ export const { baseURL } = app;
 export const DEFAULT_SEO: DefaultSeoProps = {
   title: "Flocker",
   description:
-    "Break free from twitter. Connect with your audience without barriers.",
+    "Connect with your fans and followers nearly anywhere.",
   openGraph: {
     type: "website",
     locale: "en_US",

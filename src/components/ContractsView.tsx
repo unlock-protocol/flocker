@@ -49,7 +49,7 @@ export function ContractsView({ user }: Props) {
       {!isLocksLoading && locks && locks?.length > 0 && (
         <div className="pt-6">
           <h3 className="text-lg font-extrabold sm:text-xl">
-            Your membership contracts
+            Your membership contracts:
           </h3>
           <div className="grid gap-6 sm:grid-cols-2">
             {locks?.map((lock) => (

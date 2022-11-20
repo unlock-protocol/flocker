@@ -26,7 +26,6 @@ export const createCheckoutURL = ({ network, lock }: Options) => {
     locks: {
       [lock]: {
         network,
-        emailRequired: false,
       },
     },
     pessimistic: true,
@@ -61,8 +60,13 @@ export interface TokenData {
 }
 
 export const toFormData = (props: TokenData) => {
-  const { attributes, name, description, background_color, youtube_url } =
-    props;
+  const {
+    attributes,
+    name,
+    description,
+    background_color,
+    youtube_url,
+  } = props;
   const allItems = attributes?.filter(
     (item) => typeof item.value === "string" && !item.max_value
   );
