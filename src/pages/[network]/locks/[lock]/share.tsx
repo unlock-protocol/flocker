@@ -149,7 +149,7 @@ const NextPage: NextPage = () => {
             members — can go anywhere together.
           </p>
           <p>
-            Your contract (it's called a <em>lock</em>) was deployed on the{" "}
+            Your contract (it&apos;s called a <em>lock</em>) was deployed on the{" "}
             <a href="https://polygon.technology/">Polygon</a> blockchain at the
             following address and nobody can take it from you:
           </p>
