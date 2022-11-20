@@ -9,16 +9,11 @@ const TwitterProfileHandler = async (
   req: NextApiRequest,
   res: NextApiResponse
 ) => {
-  let username = req.query.username?.toString();
-
+  const username = req.query.username?.toString().replace('@', '');
   if (!username) {
     return res.status(400).send({
       message: "No username provided",
     });
-  }
-
-  if (username.startsWith("@")) {
-    username = username.replace("@", "");
   }
 
   const response = await readOnlyClient.v2.userByUsername(username, {

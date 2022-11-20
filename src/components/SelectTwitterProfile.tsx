@@ -53,8 +53,11 @@ export function SelectTwitterProfile({
   return (
     <>
       <div className="grid gap-6">
+        <h3 className="text-lg font-extrabold sm:text-xl">
+          Deploy new membership contract
+        </h3>
         <Input
-          label="Your twitter username"
+          label="Enter your Twitter username:"
           icon={<FiAtSign size={20} />}
           value={username}
           disabled={isLoading}

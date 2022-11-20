@@ -136,8 +136,8 @@ const IndexPage: NextPage<Props> = ({ network, lock, tokenData }) => {
           {links.website && (
             <LinkButton
               icon={<LinkIcon />}
-              href={links.twitter}
-              label="My personal website"
+              href={links.website}
+              label="My website"
             />
           )}
           {links.substack && (

@@ -1,6 +1,7 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
+import NextImage from "next/image";
 import { useAuth } from "../../../../hooks/useAuth";
 import {
   SiSubstack as SubstackIcon,
@@ -30,6 +31,30 @@ const NextPage: NextPage = () => {
   const lock = router.query.lock?.toString();
   const network = Number(router.query.network);
   const username = router.query?.username?.toString();
+
+  const { data: twitterProfile, isLoading: isTwitterLoading } = useQuery(
+    ["twitter", username],
+    async () => {
+      let twitter: Record<string, any> = {};
+
+      const response = await fetch(`/api/twitter/${username}`, {
+        headers: {
+          "content-type": "application/json",
+        },
+      });
+
+      if (response.ok) {
+        return await response.json();
+      }
+      return {};
+    },
+    {
+      enabled: isAuthenticated && !!lock && !!network,
+      onError(error: Error) {},
+      retry: false,
+      refetchOnMount: true,
+    }
+  );
 
   const { data: metadata, isLoading: isMetadataLoading } = useQuery(
     ["metadata", lock, network],
@@ -64,7 +89,7 @@ const NextPage: NextPage = () => {
   const onSubmit = useCallback(
     async (formData: MetadataFormData) => {
       const attrs = formDataToTokenAttributes(formData);
-      let twitter: Record<string, any> = {};
+
       const attributes: Attribute[] = [
         ...attrs,
         {
@@ -73,22 +98,14 @@ const NextPage: NextPage = () => {
         },
       ];
 
-      const response = await fetch(`/api/twitter/${username}`, {
-        headers: {
-          "content-type": "application/json",
-        },
-      });
-
-      if (response.ok) {
-        const json = await response.json();
-        twitter = json;
-      }
-
       const metadata: TokenData = {
-        name: twitter.username,
+        name: twitterProfile.username,
         attributes: attributes,
-        description: twitter.description,
-        image: twitter?.profile_image_url?.replace("_normal", "_400x400"),
+        description: twitterProfile.description,
+        image: twitterProfile?.profile_image_url?.replace(
+          "_normal",
+          "_400x400"
+        ),
       };
 
       if (formData.background_color) {
@@ -114,9 +131,11 @@ const NextPage: NextPage = () => {
     }
   }, [metadata, reset]);
 
-  if (isMetadataLoading) {
+  if (isMetadataLoading || isTwitterLoading) {
     return null;
   }
+
+  console.log(twitterProfile);
 
   return (
     <div>
