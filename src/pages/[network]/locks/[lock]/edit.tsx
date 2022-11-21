@@ -198,6 +198,15 @@ const NextPage: NextPage = () => {
           />
           <Input
             disabled={isUpdatingMetadata}
+            type="url"
+            {...register("other")}
+            icon={<LinkIcon />}
+            label="Other"
+            placeholder="https://"
+            optional
+          />
+          <Input
+            disabled={isUpdatingMetadata}
             {...register("background_color")}
             icon={<BackgroundColorIcon />}
             optional

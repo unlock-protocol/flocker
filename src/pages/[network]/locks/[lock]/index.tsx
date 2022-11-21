@@ -159,7 +159,7 @@ const IndexPage: NextPage<Props> = ({ network, lock, tokenData }) => {
             <LinkButton
               icon={<MastodonIcon />}
               href={links.mastodon}
-              label="Check out mastodon"
+              label="Follow me on mastodon"
             />
           )}
           {links.discord && (
@@ -167,6 +167,13 @@ const IndexPage: NextPage<Props> = ({ network, lock, tokenData }) => {
               icon={<DiscordIcon />}
               href={links.discord}
               label="Join my discord"
+            />
+          )}
+          {links.other && (
+            <LinkButton
+              icon={<LinkIcon />}
+              href={links.other}
+              label="Another site"
             />
           )}
         </div>

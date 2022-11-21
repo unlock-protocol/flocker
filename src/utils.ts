@@ -80,6 +80,7 @@ export const toFormData = (props: TokenData) => {
   const substack = record?.substack;
   const instagram = record?.instagram;
   const mastodon = record?.mastodon;
+  const other = record?.other;
 
   return {
     name,
@@ -89,6 +90,7 @@ export const toFormData = (props: TokenData) => {
     website,
     instagram,
     mastodon,
+    other,
     youtube_url,
     background_color,
   };
@@ -102,6 +104,7 @@ export interface MetadataFormData {
   discord?: string;
   youtube_url?: string;
   background_color?: string;
+  other?: string;
 }
 
 export const formDataToTokenAttributes = (formData: MetadataFormData) => {
@@ -111,9 +114,14 @@ export const formDataToTokenAttributes = (formData: MetadataFormData) => {
       ([key, value]) =>
         key &&
         value &&
-        ["website", "substack", "discord", "instagram", "mastodon"].includes(
-          key
-        )
+        [
+          "website",
+          "substack",
+          "discord",
+          "instagram",
+          "mastodon",
+          "other",
+        ].includes(key)
     )
     .map(
       ([key, value]) =>
