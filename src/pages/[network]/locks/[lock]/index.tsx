@@ -16,6 +16,7 @@ import { NextSeo } from "next-seo";
 import { customizeSEO } from "../../../../config/seo";
 import "urlpattern-polyfill";
 import { Profile } from "../../../../components/Profile";
+import { ProfileLink } from "../../../../components/ProfileLink";
 interface Props {
   network: number;
   lock: string;
@@ -77,63 +78,21 @@ const IndexPage: NextPage<Props> = ({ network, lock, tokenData }) => {
           </button>
         </div>
       </nav>
-      <ColumnLayout className="max-w-xl pt-8">
+      <ColumnLayout>
         <Profile
           name={tokenData.name}
           description={tokenData.description}
           imageURL={tokenData.image}
         />
-        <div className="grid gap-6 pt-16">
-          {links.twitter && (
-            <LinkButton
-              icon={<TwitterIcon />}
-              href={links.twitter}
-              label="Follow me on twitter"
-            />
-          )}
-          {links.website && (
-            <LinkButton
-              icon={<LinkIcon />}
-              href={links.website}
-              label="My website"
-            />
-          )}
-          {links.substack && (
-            <LinkButton
-              icon={<SubstackIcon />}
-              href={links.substack}
-              label="Read my blog posts"
-            />
-          )}
-          {links.instagram && (
-            <LinkButton
-              icon={<InstagramIcon />}
-              href={links.instagram}
-              label="Check out instagram"
-            />
-          )}
-          {links.mastodon && (
-            <LinkButton
-              icon={<MastodonIcon />}
-              href={links.mastodon}
-              label="Follow me on mastodon"
-            />
-          )}
-          {links.discord && (
-            <LinkButton
-              icon={<DiscordIcon />}
-              href={links.discord}
-              label="Join my discord"
-            />
-          )}
-          {links.other && (
-            <LinkButton
-              icon={<LinkIcon />}
-              href={links.other}
-              label="Another site"
-            />
-          )}
-        </div>
+        <ProfileLink
+          twitter={links.twitter}
+          mastodon={links.mastodon}
+          instagram={links.instagram}
+          discord={links.discord}
+          website={links.website}
+          other={links.other}
+          substack={links.substack}
+        />
       </ColumnLayout>
     </div>
   );

@@ -26,7 +26,7 @@ export default function Home() {
         openGraph={routes.home.seo.openGraph}
       />
       <Navigation />
-      <ColumnLayout className="pt-12">
+      <ColumnLayout>
         <header className="box-border flex flex-col max-w-2xl gap-4 mx-auto">
           <h1 className="text-5xl font-extrabold">
             Connect with your fans and followers nearly anywhere.
@@ -35,7 +35,6 @@ export default function Home() {
             Create your own membership smart contract in five minutes.
           </h2>
         </header>
-        {isAuthenticated && !twitterUsername && <ContractsView user={user} />}
         <div className="grid gap-6 mt-6">
           {!twitterUsername && (
             <SelectTwitterProfile
@@ -61,6 +60,7 @@ export default function Home() {
           {twitterUsername && isAuthenticated && (
             <ContractDeployBox twitterUsername={twitterUsername} />
           )}
+          {isAuthenticated && !twitterUsername && <ContractsView user={user} />}
         </div>
       </ColumnLayout>
     </div>

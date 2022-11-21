@@ -25,6 +25,7 @@ import { Navigation } from "../../../../components/Navigation";
 import { ColumnLayout } from "../../../../components/ColumnLayout";
 import { FaHashtag as BackgroundColorIcon } from "react-icons/fa";
 import { toast } from "react-hot-toast";
+import { TextBox } from "../../../../components/TextBox";
 
 const NextPage: NextPage = () => {
   const { isAuthenticated, storage } = useAuth();
@@ -127,9 +128,19 @@ const NextPage: NextPage = () => {
     [username, updateMetadata, twitterProfile]
   );
 
-  const { handleSubmit, register, reset } = useForm<MetadataFormData>({
-    defaultValues: {},
-  });
+  const { handleSubmit, register, reset, setValue } = useForm<MetadataFormData>(
+    {
+      defaultValues: {
+        description: twitterProfile?.description,
+      },
+    }
+  );
+
+  useEffect(() => {
+    if (twitterProfile.description) {
+      setValue("description", twitterProfile.description);
+    }
+  }, [twitterProfile, setValue]);
 
   useEffect(() => {
     if (metadata && Object.keys(metadata).length !== 0) {
@@ -144,8 +155,16 @@ const NextPage: NextPage = () => {
   return (
     <div>
       <Navigation />
-      <ColumnLayout className="pt-12">
+      <ColumnLayout>
         <form onSubmit={handleSubmit(onSubmit)} className="grid gap-6">
+          <TextBox
+            disabled={isUpdatingMetadata}
+            {...register("description")}
+            label="Description"
+            placeholder="Write a description"
+            optional
+            rows={4}
+          />
           <Input
             disabled={isUpdatingMetadata}
             type="url"

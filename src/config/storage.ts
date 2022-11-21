@@ -2,7 +2,6 @@ import { LocksmithService } from "@unlock-protocol/unlock-js";
 import axios from "axios";
 import { app } from "./app";
 import { createLocalStorageValue } from "../utils";
-
 const [getAccessToken, setAccessToken] = createLocalStorageValue("accessToken");
 const [getRefreshToken, setRefreshToken] =
   createLocalStorageValue("refreshToken");

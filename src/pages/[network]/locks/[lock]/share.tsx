@@ -11,84 +11,50 @@ const partners = [
   {
     name: "Paragraph",
     url: "https://paragraph.xyz/",
-    description: (
-      <p>
+    description: `
         Paragraph is a service for Web3-powered newsletters where you can write
         content, grow your audience and foster a community. No matter if your
         readers are on web2 or web3, Paragraph turns your subscribers into
-        members.
-      </p>
-    ),
+        members.`,
     youtube: "https://www.youtube.com/embed/KaMVpOnZveE",
   },
   {
     name: "Highlight",
     url: "https://highlight.xyz/",
-    description: (
-      <p>
+    description: `
         Highlight is an end-to-end toolkit to bring web3 membership and rewards
         to your fanbase, with no crypto experience required. In minutes, anyone
         can build a custom-branded community home, with rich integrations that
-        offer ongoing utility and exclusive access.
-      </p>
-    ),
+        offer ongoing utility and exclusive access.`,
     youtube: "https://www.youtube.com/embed/LEfQ8zGWT4c",
   },
   {
     name: "Geneva",
     url: "http://geneva.com",
-    description: (
-      <p>
-        Geneva is where your group chats, and gives you everything you need to
-        keep your groups, clubs, and communities organized and connected.{" "}
-      </p>
-    ),
+    description: `Geneva is where your group chats, and gives you everything you need to
+        keep your groups, clubs, and communities organized and connected.`,
     youtube: "https://www.youtube.com/embed/c1WKFrrf2QY",
   },
   {
     name: "Tropee",
     url: "https://www.tropee.com/",
-    description: (
-      <p>
-        Tropee is a collection of utilities you can use to create events,
-        content, raffles, and more for your members.{" "}
-      </p>
-    ),
+    description:
+      "Tropee is a collection of utilities you can use to create events, content, raffles, and more for your members.",
     youtube: "https://www.youtube.com/embed/7Mg6sif6iYI",
   },
   {
     name: "Discord",
     url: "https://unlock-protocol.com/blog/guildxyz-launch",
-    description: (
-      <p>
-        Discord is the easiest way to talk over voice, video, and text. Talk,
-        chat, hang out, and stay close with your friends and communities. Here
-        is the{" "}
-        <a href="https://unlock-protocol.com/blog/guildxyz-launch">
-          how-to guide on How To Use Unlock Protocol Memberships with Discord
-        </a>{" "}
-        (in conjunction with Guild.xyz).{" "}
-      </p>
-    ),
-    image:
-      "https://s3.us-west-2.amazonaws.com/secure.notion-static.com/424de92c-2594-4f65-a7cf-50742359e631/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20221121%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20221121T174341Z&X-Amz-Expires=86400&X-Amz-Signature=2f84b27bf936dbbb038fbbcd4a3ef3ff7a41116e85f7a1741363126161d160cd&X-Amz-SignedHeaders=host&response-content-disposition=filename%3D%22Untitled.png%22&x-id=GetObject",
+    description: `Discord is the easiest way to talk over voice, video, and text. Talk,
+        chat, hang out, and stay close with your friends and communities. Token gate your discord community with guild.xyz`,
+    youtube: null,
   },
   {
     name: "Telegram",
-    url:
-      "https://unlock-protocol.com/guides/how-to-token-gate-telegram-with-unlock-protocol-and-guild-xyz/",
-    description: (
-      <p>
-        Telegram is a globally-accessible messaging and chat service. Here is
-        the how-to guide on{" "}
-        <a href="https://unlock-protocol.com/guides/how-to-token-gate-telegram-with-unlock-protocol-and-guild-xyz/">
-          How To Use Unlock Protocol Memberships with Telegram
-        </a>
-        (in conjunction with Guild.xyz).
-      </p>
-    ),
-    image:
-      "https://s3.us-west-2.amazonaws.com/secure.notion-static.com/25b15553-e215-4859-944c-aeb69c0f5129/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20221121%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20221121T174401Z&X-Amz-Expires=86400&X-Amz-Signature=294d1d22b9aa6c371774d41bb394fa78d45f0069bcdda872d490b955a0728198&X-Amz-SignedHeaders=host&response-content-disposition=filename%3D%22Untitled.png%22&x-id=GetObject",
+    url: "https://unlock-protocol.com/guides/how-to-token-gate-telegram-with-unlock-protocol-and-guild-xyz/",
+    description:
+      "Telegram is a globally-accessible messaging and chat service. Token gate your telegram community with guild.xyz",
+    youtube: null,
   },
   {
     name: "WordPress",
@@ -99,8 +65,8 @@ const partners = [
         WordPress sites using the{" "}
         <a href="https://wordpress.org/plugins/unlock-protocol/">
           Unlock WordPress plugin
-        </a>
-        , or with{" "}
+        </a>{" "}
+        or{" "}
         <a href="https://wordpress.org/plugins/pmpro-unlock/">
           PaidMembershipsPro
         </a>
@@ -144,7 +110,7 @@ const NextPage: NextPage = () => {
   return (
     <div>
       <Navigation />
-      <ColumnLayout className="pt-12">
+      <ColumnLayout>
         <header className="box-border flex flex-col max-w-2xl gap-4 pb-6 mx-auto">
           <h1 className="text-3xl font-bold sm:text-5xl">What&apos;s next?</h1>
           <h2 className="block text-lg text-gray-500 sm:text-xl">
@@ -155,7 +121,7 @@ const NextPage: NextPage = () => {
         <div className="grid gap-6">
           {checkoutURL && (
             <a
-              className="inline-flex bg-blue-500 hover:bg-opacity-75 disabled:hover:bg-opacity-75 disabled:hover:bg-opacity-75 rounded-full justify-center cursor-pointer text-white font-medium px-4 py-2 items-center gap-2 disabled:bg-opacity-75 disabled:cursor-not-allowed"
+              className="inline-flex items-center justify-center gap-2 px-4 py-2 font-medium text-white bg-blue-500 rounded-full cursor-pointer hover:bg-opacity-75 disabled:hover:bg-opacity-75 disabled:bg-opacity-75 disabled:cursor-not-allowed"
               target="_blank"
               href={shareUrl}
               rel="noopener noreferrer"
@@ -165,8 +131,8 @@ const NextPage: NextPage = () => {
           )}
         </div>
 
-        <article className="prose mt-16">
-          <p className="text-lg">
+        <article className="pt-16 prose md:prose-lg">
+          <p>
             You now have your own membership list that can never be taken away
             from you. And, as a bonus, you and your fans and followers — your
             members — can go anywhere together.
@@ -194,47 +160,44 @@ const NextPage: NextPage = () => {
             middleman. No gatekeeper. No chaos monkey to take them away from
             you.
           </p>
-
+        </article>
+        <div className="grid gap-6 pt-12">
           {partners.map((partner, i) => {
             return (
-              <section key={i}>
-                <h2>
-                  <a href={partner.url} target="_blank" rel="noreferrer">
+              <section
+                className="grid gap-6 p-6 bg-white shadow rounded-xl"
+                key={i}
+              >
+                <div className="space-y-2">
+                  <a
+                    className="px-4 py-1 text-xl font-bold rounded hover:bg-gray-100 bg-gray-50"
+                    href={partner.url}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
                     {partner.name}
                   </a>
-                </h2>
-                {partner.description}
+                  <div className="text-gray-600">{partner.description}</div>
+                </div>
                 {partner.youtube && (
                   <iframe
-                    width="560"
-                    height="315"
+                    className="w-full rounded aspect-video"
                     src={partner.youtube}
                     title="YouTube video player"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                   />
                 )}
                 {partner.image && (
-                  <NextImage
+                  <img
                     src={partner.image}
-                    height={315}
-                    width={560}
                     alt={partner.name}
+                    className="w-full rounded aspect-video"
                   />
                 )}
               </section>
             );
           })}
-
-          <p>
-            Check the{" "}
-            <a href="https://unlock-protocol.com/guides/">
-              Unlock Protocol guides
-            </a>{" "}
-            for more examnples of integrations or the{" "}
-            <a href="https://docs.unlock-protocol.com/">docs</a> if you are
-            interested in build your own!
-          </p>
-        </article>
+        </div>
       </ColumnLayout>
     </div>
   );

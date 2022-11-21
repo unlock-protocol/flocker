@@ -8,7 +8,7 @@ export interface Props {
 
 export function ColumnLayout({ children, className }: Props) {
   const columnLayoutClass = twMerge(
-    "w-full max-w-2xl px-6 mx-auto md:px-0",
+    "w-full max-w-2xl px-6 sm:px-0 pt-12 pb-6 mx-auto",
     className
   );
   return <div className={columnLayoutClass}>{children}</div>;

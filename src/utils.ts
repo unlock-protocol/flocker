@@ -26,6 +26,7 @@ export const createCheckoutURL = ({ network, lock }: Options) => {
     locks: {
       [lock]: {
         network,
+        skipRecipient: true,
       },
     },
     pessimistic: true,
@@ -60,13 +61,8 @@ export interface TokenData {
 }
 
 export const toFormData = (props: TokenData) => {
-  const {
-    attributes,
-    name,
-    description,
-    background_color,
-    youtube_url,
-  } = props;
+  const { attributes, name, description, background_color, youtube_url } =
+    props;
   const allItems = attributes?.filter(
     (item) => typeof item.value === "string" && !item.max_value
   );
@@ -102,6 +98,7 @@ export interface MetadataFormData {
   mastodon?: string;
   substack?: string;
   discord?: string;
+  description?: string;
   youtube_url?: string;
   background_color?: string;
   other?: string;
@@ -120,6 +117,7 @@ export const formDataToTokenAttributes = (formData: MetadataFormData) => {
           "discord",
           "instagram",
           "mastodon",
+          "twitter",
           "other",
         ].includes(key)
     )
