@@ -9,6 +9,7 @@ import { ContractsView } from "../components/ContractsView";
 import { NextSeo } from "next-seo";
 import { routes } from "../config/routes";
 import { SelectTwitterProfile } from "../components/SelectTwitterProfile";
+
 export default function Home() {
   const { login, isAuthenticated, user, isAuthenticating } = useAuth();
   const router = useRouter();

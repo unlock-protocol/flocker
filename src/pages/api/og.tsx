@@ -1,5 +1,4 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { app } from "../../config/app";
 import { screenshot } from "../../handlers";
 
 const TwitterProfileHandler = async (

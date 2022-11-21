@@ -36,7 +36,29 @@ export function ContractsView({ user }: Props) {
         return lock.name?.startsWith("@");
       });
 
-      return locks;
+      const items = await Promise.all(
+        locks.map(async (lock) => {
+          try {
+            const response = await fetch(
+              `${app.locksmith}/v2/api/metadata/${app.defaultNetwork}/locks/${lock.address}`
+            );
+            if (!response.ok) {
+              throw new Error("Not found.");
+            }
+            return {
+              ...lock,
+              metadata: true,
+            };
+          } catch {
+            return {
+              ...lock,
+              metadata: false,
+            };
+          }
+        })
+      );
+
+      return items;
     },
     {
       refetchOnMount: true,
@@ -64,16 +86,30 @@ export function ContractsView({ user }: Props) {
                     network={app.defaultNetwork}
                   />
                 </div>
-                <Button
-                  onClick={(event) => {
-                    event.preventDefault();
-                    router.push(
-                      `/${app.defaultNetwork}/locks/${lock.address}/edit?username=${lock.name}`
-                    );
-                  }}
-                >
-                  Edit Attributes
-                </Button>
+                <div className="flex flex-col justify-end gap-4">
+                  {lock.metadata && (
+                    <Button
+                      onClick={(event) => {
+                        event.preventDefault();
+                        router.push(
+                          `/${app.defaultNetwork}/locks/${lock.address}/share?username=${lock.name}`
+                        );
+                      }}
+                    >
+                      Share
+                    </Button>
+                  )}
+                  <Button
+                    onClick={(event) => {
+                      event.preventDefault();
+                      router.push(
+                        `/${app.defaultNetwork}/locks/${lock.address}/edit?username=${lock.name}`
+                      );
+                    }}
+                  >
+                    Edit
+                  </Button>
+                </div>
               </div>
             ))}
           </div>
