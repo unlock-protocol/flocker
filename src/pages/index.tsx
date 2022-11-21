@@ -9,9 +9,8 @@ import { ContractsView } from "../components/ContractsView";
 import { NextSeo } from "next-seo";
 import { routes } from "../config/routes";
 import { SelectTwitterProfile } from "../components/SelectTwitterProfile";
-
 export default function Home() {
-  const { login, isAuthenticated, user } = useAuth();
+  const { login, isAuthenticated, user, isAuthenticating } = useAuth();
   const router = useRouter();
   const [twitterUsername, setTwitterUsername] = useState<string>();
 
@@ -36,33 +35,32 @@ export default function Home() {
             Create your own membership smart contract in five minutes.
           </h2>
         </header>
-        <div className="w-full max-w-2xl mx-auto">
-          {isAuthenticated && !twitterUsername && <ContractsView user={user} />}
-          <div className="grid gap-6 mt-6">
-            {!twitterUsername && (
-              <SelectTwitterProfile
-                twitterUsername={twitterUsername}
-                setTwitterUsername={setTwitterUsername}
-              />
-            )}
-            {twitterUsername && !isAuthenticated && (
-              <>
-                <p>
-                  Let&apos;s get you set up to deploy your membership contract!
-                </p>
-                <Button
-                  onClick={() => {
-                    login({ twitterUsername });
-                  }}
-                >
-                  Continue
-                </Button>
-              </>
-            )}
-            {twitterUsername && isAuthenticated && (
-              <ContractDeployBox twitterUsername={twitterUsername} />
-            )}
-          </div>
+        {isAuthenticated && !twitterUsername && <ContractsView user={user} />}
+        <div className="grid gap-6 mt-6">
+          {!twitterUsername && (
+            <SelectTwitterProfile
+              twitterUsername={twitterUsername}
+              setTwitterUsername={setTwitterUsername}
+            />
+          )}
+          {twitterUsername && !isAuthenticated && (
+            <div className="grid gap-6">
+              <p>
+                Let&apos;s get you set up to deploy your membership contract!
+              </p>
+              <Button
+                loading={isAuthenticating}
+                onClick={() => {
+                  login({ twitterUsername });
+                }}
+              >
+                Continue
+              </Button>
+            </div>
+          )}
+          {twitterUsername && isAuthenticated && (
+            <ContractDeployBox twitterUsername={twitterUsername} />
+          )}
         </div>
       </ColumnLayout>
     </div>

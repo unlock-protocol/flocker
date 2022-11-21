@@ -12,12 +12,10 @@ import {
   SiTwitter as TwitterIcon,
 } from "react-icons/si";
 import { FiLink as LinkIcon } from "react-icons/fi";
-import NextImage from "next/image";
-import fontColorContrast from "font-color-contrast";
-import { Button } from "../../../../components/Button";
 import { NextSeo } from "next-seo";
 import { customizeSEO } from "../../../../config/seo";
 import "urlpattern-polyfill";
+import { Profile } from "../../../../components/Profile";
 interface Props {
   network: number;
   lock: string;
@@ -48,24 +46,13 @@ const IndexPage: NextPage<Props> = ({ network, lock, tokenData }) => {
       return acc;
     }, {});
 
-  const backgroundColor =
-    tokenData.background_color && tokenData.background_color?.startsWith("#")
-      ? tokenData.background_color
-      : `#${tokenData.background_color}`;
-
-  const contrast = fontColorContrast(backgroundColor || "#FFFFFF");
   const checkoutURL = createCheckoutURL({
     network,
     lock,
   });
 
   return (
-    <div
-      className="h-screen"
-      style={{
-        backgroundColor,
-      }}
-    >
+    <div className="flex flex-col flex-1 h-screen">
       <NextSeo
         {...customizeSEO({
           description: tokenData.description,
@@ -77,55 +64,25 @@ const IndexPage: NextPage<Props> = ({ network, lock, tokenData }) => {
           },
         })}
       />
-      <nav className="flex justify-end w-full max-w-2xl p-6 mx-auto">
-        <button
-          className="inline-flex items-center justify-center gap-2 px-4 py-2 font-medium rounded-full cursor-pointer hover:bg-opacity-75 disabled:hover:bg-opacity-75 disabled:bg-opacity-75 disabled:cursor-not-allowed"
-          style={{
-            backgroundColor: contrast,
-            color: fontColorContrast(contrast),
-          }}
-          onClick={(event) => {
-            event.preventDefault();
-            window.open(checkoutURL.toString());
-          }}
-        >
-          Claim membership
-        </button>
+      <nav className="sticky top-0 z-30 bg-opacity-75 border-b border-gray-100 backdrop-blur backdrop-filter firefox:bg-opacity-90">
+        <div className="flex justify-end w-full max-w-2xl p-2 mx-auto">
+          <button
+            className="inline-flex items-center px-4 py-2 font-bold text-white bg-gray-900 rounded-full hover:bg-gray-800"
+            onClick={(event) => {
+              event.preventDefault();
+              window.open(checkoutURL.toString());
+            }}
+          >
+            Claim membership
+          </button>
+        </div>
       </nav>
       <ColumnLayout className="max-w-xl pt-8">
-        <header className="flex flex-col items-center gap-4 text-center">
-          <div className="flex flex-col items-center gap-2">
-            {tokenData.image && (
-              <NextImage
-                src={tokenData.image}
-                height={120}
-                width={120}
-                className="border border-gray-100 rounded-full"
-                alt={tokenData.name}
-              />
-            )}
-            {tokenData.name && (
-              <h1
-                style={{
-                  color: contrast,
-                }}
-                className="text-xl font-bold sm:text-3xl"
-              >
-                {tokenData.name}
-              </h1>
-            )}
-          </div>
-          {tokenData.description && (
-            <p
-              style={{
-                color: contrast,
-              }}
-              className="text-lg"
-            >
-              {tokenData.description}
-            </p>
-          )}
-        </header>
+        <Profile
+          name={tokenData.name}
+          description={tokenData.description}
+          imageURL={tokenData.image}
+        />
         <div className="grid gap-6 pt-16">
           {links.twitter && (
             <LinkButton

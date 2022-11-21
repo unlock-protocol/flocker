@@ -104,21 +104,27 @@ export function ContractDeployBox({ twitterUsername }: ContractDeployBoxProps) {
       />
 
       {lockContract ? (
-        <div className="inset-0 grid gap-2 p-4 bg-white shadow-2xl rounded-xl shadow-blue-200">
-          <LockAddress
-            lockAddress={lockContract.address}
-            network={lockContract.network}
-          />
-          <Button
-            onClick={(event) => {
-              event.preventDefault();
-              router.push(
-                `/${network}/locks/${lockContract.address}/edit?username=${twitterUsername}`
-              );
-            }}
-          >
-            Success. Now, let folks know where else they can find you...
-          </Button>
+        <div>
+          <div className="inset-0 grid gap-6 p-4 bg-white shadow-2xl rounded-xl shadow-blue-200">
+            <LockAddress
+              lockAddress={lockContract.address}
+              network={lockContract.network}
+            />
+            <Button
+              onClick={(event) => {
+                event.preventDefault();
+                router.push(
+                  `/${network}/locks/${lockContract.address}/edit?username=${twitterUsername}`
+                );
+              }}
+            >
+              Next
+            </Button>
+          </div>
+          <p className="mt-4 text-gray-500">
+            You successfully created a contract. Let&apos;s add other places
+            where people can find you.
+          </p>
         </div>
       ) : (
         <div className="grid gap-6">

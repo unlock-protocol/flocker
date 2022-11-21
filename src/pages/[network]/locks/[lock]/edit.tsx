@@ -1,7 +1,6 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
-import NextImage from "next/image";
 import { useAuth } from "../../../../hooks/useAuth";
 import {
   SiSubstack as SubstackIcon,
@@ -11,7 +10,7 @@ import {
   SiYoutube as YoutubeIcon,
 } from "react-icons/si";
 import { FiLink as LinkIcon } from "react-icons/fi";
-import { useFieldArray, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { Input } from "../../../../components/Input";
 import { Button } from "../../../../components/Button";
 import {
@@ -25,6 +24,7 @@ import { useCallback, useEffect } from "react";
 import { Navigation } from "../../../../components/Navigation";
 import { ColumnLayout } from "../../../../components/ColumnLayout";
 import { FaHashtag as BackgroundColorIcon } from "react-icons/fa";
+import { toast } from "react-hot-toast";
 
 const NextPage: NextPage = () => {
   const { isAuthenticated, storage } = useAuth();
@@ -36,8 +36,6 @@ const NextPage: NextPage = () => {
   const { data: twitterProfile, isLoading: isTwitterLoading } = useQuery(
     ["twitter", username],
     async () => {
-      let twitter: Record<string, any> = {};
-
       const response = await fetch(`/api/twitter/${username}`, {
         headers: {
           "content-type": "application/json",
@@ -45,19 +43,22 @@ const NextPage: NextPage = () => {
       });
 
       if (response.ok) {
-        return await response.json();
+        const twitter = await response.json();
+        return twitter;
       }
       return {};
     },
     {
       enabled: isAuthenticated && !!lock && !!network,
-      onError(error: Error) {},
+      onError(error: Error) {
+        console.error(error);
+      },
       retry: false,
       refetchOnMount: true,
     }
   );
 
-  const { data: metadata, isLoading: isMetadataLoading } = useQuery(
+  const { data: metadata, isInitialLoading: isMetadataLoading } = useQuery(
     ["metadata", lock, network],
     async () => {
       const response = await storage.lockMetadata(network, lock!);
@@ -66,7 +67,9 @@ const NextPage: NextPage = () => {
     },
     {
       enabled: isAuthenticated && !!lock && !!network,
-      onError(error: Error) {},
+      onError(error: Error) {
+        console.error(error.message);
+      },
       retry: false,
       refetchOnMount: true,
     }
@@ -83,6 +86,9 @@ const NextPage: NextPage = () => {
       },
       onSuccess() {
         router.push(`/${network}/locks/${lock}/share?username=${username}`);
+      },
+      onError(error: Error) {
+        toast.error(error.message);
       },
     }
   );
@@ -134,8 +140,6 @@ const NextPage: NextPage = () => {
   if (isMetadataLoading || isTwitterLoading) {
     return null;
   }
-
-  console.log(twitterProfile);
 
   return (
     <div>

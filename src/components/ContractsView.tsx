@@ -48,10 +48,10 @@ export function ContractsView({ user }: Props) {
       {isLocksLoading && <LoadingIcon />}
       {!isLocksLoading && locks && locks?.length > 0 && (
         <div className="pt-6">
-          <h3 className="text-lg font-extrabold sm:text-xl">
+          <h3 className="text-lg font-bold sm:text-xl">
             Your membership contracts:
           </h3>
-          <div className="grid gap-6 sm:grid-cols-2">
+          <div className="grid gap-6 pt-2 sm:grid-cols-2">
             {locks?.map((lock) => (
               <div
                 className="grid gap-6 p-4 bg-white rounded-lg shadow-sm"
