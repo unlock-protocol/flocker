@@ -145,6 +145,14 @@ const NextPage: NextPage = () => {
               Share on Twitter
             </a>
           )}
+          <a
+            className="inline-flex items-center justify-center gap-2 px-4 py-2 font-medium text-black bg-white rounded-full shadow-xl cursor-pointer shadow-blue-50 hover:bg-opacity-75 disabled:hover:bg-opacity-75 disabled:bg-opacity-75 disabled:cursor-not-allowed"
+            target="_blank"
+            href="https://app.unlock-protocol.com/locks"
+            rel="noopener noreferrer"
+          >
+            Open Unlock Dashboard
+          </a>
         </div>
 
         <article className="pt-16 prose md:prose-lg">
