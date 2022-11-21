@@ -8,6 +8,7 @@ import {
   SiSubstack as SubstackIcon,
   SiDiscord as DiscordIcon,
   SiInstagram as InstagramIcon,
+  SiMastodon as MastodonIcon,
   SiTwitter as TwitterIcon,
 } from "react-icons/si";
 import { FiLink as LinkIcon } from "react-icons/fi";
@@ -152,6 +153,13 @@ const IndexPage: NextPage<Props> = ({ network, lock, tokenData }) => {
               icon={<InstagramIcon />}
               href={links.instagram}
               label="Check out instagram"
+            />
+          )}
+          {links.mastodon && (
+            <LinkButton
+              icon={<MastodonIcon />}
+              href={links.mastodon}
+              label="Check out mastodon"
             />
           )}
           {links.discord && (

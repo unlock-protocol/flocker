@@ -7,6 +7,7 @@ import {
   SiSubstack as SubstackIcon,
   SiDiscord as DiscordIcon,
   SiInstagram as InstagramIcon,
+  SiMastodon as MastodonIcon,
   SiYoutube as YoutubeIcon,
 } from "react-icons/si";
 import { FiLink as LinkIcon } from "react-icons/fi";
@@ -183,6 +184,15 @@ const NextPage: NextPage = () => {
             {...register("youtube_url")}
             icon={<YoutubeIcon />}
             label="Youtube"
+            placeholder="https://"
+            optional
+          />
+          <Input
+            disabled={isUpdatingMetadata}
+            type="url"
+            {...register("mastodon")}
+            icon={<MastodonIcon />}
+            label="Mastodon"
             placeholder="https://"
             optional
           />
