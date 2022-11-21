@@ -9,7 +9,7 @@ interface ScreenshotOptions {
 export async function screenshot({
   url,
   width = 1200,
-  height = 700,
+  height = 900,
 }: ScreenshotOptions) {
   const endpoint = new URL("https://chrome.browserless.io/screenshot");
   endpoint.searchParams.append("token", app.browserLessAPIKey);
@@ -18,7 +18,6 @@ export async function screenshot({
     url,
     options: {
       type: "jpeg",
-      fullPage: true,
       quality: 75,
     },
     gotoOptions: {
