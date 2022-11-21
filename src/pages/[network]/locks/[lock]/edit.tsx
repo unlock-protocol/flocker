@@ -25,7 +25,6 @@ import { Navigation } from "../../../../components/Navigation";
 import { ColumnLayout } from "../../../../components/ColumnLayout";
 import { FaHashtag as BackgroundColorIcon } from "react-icons/fa";
 import { toast } from "react-hot-toast";
-import { TextBox } from "../../../../components/TextBox";
 
 const NextPage: NextPage = () => {
   const { isAuthenticated, storage } = useAuth();
@@ -34,7 +33,7 @@ const NextPage: NextPage = () => {
   const network = Number(router.query.network);
   const username = router.query?.username?.toString();
 
-  const { data: twitterProfile, isLoading: isTwitterLoading } = useQuery(
+  const { data: twitterProfile, isInitialLoading: isTwitterLoading } = useQuery(
     ["twitter", username],
     async () => {
       const response = await fetch(`/api/twitter/${username}`, {
@@ -130,17 +129,9 @@ const NextPage: NextPage = () => {
 
   const { handleSubmit, register, reset, setValue } = useForm<MetadataFormData>(
     {
-      defaultValues: {
-        description: twitterProfile?.description,
-      },
+      defaultValues: {},
     }
   );
-
-  useEffect(() => {
-    if (twitterProfile.description) {
-      setValue("description", twitterProfile.description);
-    }
-  }, [twitterProfile, setValue]);
 
   useEffect(() => {
     if (metadata && Object.keys(metadata).length !== 0) {
@@ -157,14 +148,6 @@ const NextPage: NextPage = () => {
       <Navigation />
       <ColumnLayout>
         <form onSubmit={handleSubmit(onSubmit)} className="grid gap-6">
-          <TextBox
-            disabled={isUpdatingMetadata}
-            {...register("description")}
-            label="Description"
-            placeholder="Write a description"
-            optional
-            rows={4}
-          />
           <Input
             disabled={isUpdatingMetadata}
             type="url"

@@ -61,8 +61,7 @@ export interface TokenData {
 }
 
 export const toFormData = (props: TokenData) => {
-  const { attributes, name, description, background_color, youtube_url } =
-    props;
+  const { attributes, name, background_color, youtube_url } = props;
   const allItems = attributes?.filter(
     (item) => typeof item.value === "string" && !item.max_value
   );
@@ -80,7 +79,6 @@ export const toFormData = (props: TokenData) => {
 
   return {
     name,
-    description,
     discord,
     substack,
     website,
@@ -98,7 +96,6 @@ export interface MetadataFormData {
   mastodon?: string;
   substack?: string;
   discord?: string;
-  description?: string;
   youtube_url?: string;
   background_color?: string;
   other?: string;
