@@ -5,6 +5,7 @@ import { Button } from "../../../../components/Button";
 import { ColumnLayout } from "../../../../components/ColumnLayout";
 import { Navigation } from "../../../../components/Navigation";
 import { createCheckoutURL } from "../../../../utils";
+import NextImage from "next/image";
 
 const partners = [
   {
@@ -69,7 +70,8 @@ const partners = [
         (in conjunction with Guild.xyz).{" "}
       </p>
     ),
-    youtube: "XXX",
+    image:
+      "https://s3.us-west-2.amazonaws.com/secure.notion-static.com/424de92c-2594-4f65-a7cf-50742359e631/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20221121%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20221121T174341Z&X-Amz-Expires=86400&X-Amz-Signature=2f84b27bf936dbbb038fbbcd4a3ef3ff7a41116e85f7a1741363126161d160cd&X-Amz-SignedHeaders=host&response-content-disposition=filename%3D%22Untitled.png%22&x-id=GetObject",
   },
   {
     name: "Telegram",
@@ -85,7 +87,28 @@ const partners = [
         (in conjunction with Guild.xyz).
       </p>
     ),
-    youtube: "XXX",
+    image:
+      "https://s3.us-west-2.amazonaws.com/secure.notion-static.com/25b15553-e215-4859-944c-aeb69c0f5129/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20221121%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20221121T174401Z&X-Amz-Expires=86400&X-Amz-Signature=294d1d22b9aa6c371774d41bb394fa78d45f0069bcdda872d490b955a0728198&X-Amz-SignedHeaders=host&response-content-disposition=filename%3D%22Untitled.png%22&x-id=GetObject",
+  },
+  {
+    name: "WordPress",
+    url: "https://wordpress.org/plugins/pmpro-unlock/",
+    description: (
+      <p>
+        WordPress powers 43% of websites. You can create members-only areas for
+        WordPress sites using the{" "}
+        <a href="https://wordpress.org/plugins/unlock-protocol/">
+          Unlock WordPress plugin
+        </a>
+        , or with{" "}
+        <a href="https://wordpress.org/plugins/pmpro-unlock/">
+          PaidMembershipsPro
+        </a>
+        .
+      </p>
+    ),
+    image:
+      "https://s3.us-west-2.amazonaws.com/secure.notion-static.com/98f1e958-db98-4b2f-ba99-1fdde2d5b0a5/Screen_Shot_2022-11-19_at_12.33.40_PM.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20221121%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20221121T174555Z&X-Amz-Expires=86400&X-Amz-Signature=4c9d8d978dc003dbc2095cd6be988a9e6ad6920081e39ba51fc36734a78b2c13&X-Amz-SignedHeaders=host&response-content-disposition=filename%3D%22Screen%2520Shot%25202022-11-19%2520at%252012.33.40%2520PM.png%22&x-id=GetObject",
   },
 ];
 
@@ -181,16 +204,36 @@ const NextPage: NextPage = () => {
                   </a>
                 </h2>
                 {partner.description}
-                <iframe
-                  width="560"
-                  height="315"
-                  src={partner.youtube}
-                  title="YouTube video player"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                />
+                {partner.youtube && (
+                  <iframe
+                    width="560"
+                    height="315"
+                    src={partner.youtube}
+                    title="YouTube video player"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  />
+                )}
+                {partner.image && (
+                  <NextImage
+                    src={partner.image}
+                    height={315}
+                    width={560}
+                    alt={partner.name}
+                  />
+                )}
               </section>
             );
           })}
+
+          <p>
+            Check the{" "}
+            <a href="https://unlock-protocol.com/guides/">
+              Unlock Protocol guides
+            </a>{" "}
+            for more examnples of integrations or the{" "}
+            <a href="https://docs.unlock-protocol.com/">docs</a> if you are
+            interested in build your own!
+          </p>
         </article>
       </ColumnLayout>
     </div>

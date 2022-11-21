@@ -3,7 +3,7 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   images: {
-    domains: ["pbs.twimg.com"],
+    domains: ["s3.us-west-2.amazonaws.com", "pbs.twimg.com"],
   },
 };
 
