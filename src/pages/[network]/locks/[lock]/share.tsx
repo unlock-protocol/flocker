@@ -4,8 +4,11 @@ import { useMemo } from "react";
 import { Button } from "../../../../components/Button";
 import { ColumnLayout } from "../../../../components/ColumnLayout";
 import { Navigation } from "../../../../components/Navigation";
-import { createCheckoutURL } from "../../../../utils";
+import { createCheckoutURL, ogUrl } from "../../../../utils";
 import NextImage from "next/image";
+import { NextSeo } from "next-seo";
+import { customizeSEO } from "../../../../config/seo";
+import { app } from "../../../../config/app";
 
 const partners = [
   {
@@ -81,6 +84,7 @@ const partners = [
 const NextPage: NextPage = () => {
   const router = useRouter();
   const lock = router.query.lock?.toString();
+  const username = router.query.username?.toString();
   const network = Number(router.query.network);
 
   const checkoutURL = useMemo(() => {
@@ -109,6 +113,18 @@ const NextPage: NextPage = () => {
 
   return (
     <div>
+      <NextSeo
+        {...customizeSEO({
+          title: "Share",
+          description: "Share your profile to users.",
+          imagePath: ogUrl(
+            new URL(`/${network}/locks/${lock}/share`, app.baseURL)
+          ),
+          twitter: {
+            handle: username,
+          },
+        })}
+      />
       <Navigation />
       <ColumnLayout>
         <header className="box-border flex flex-col max-w-2xl gap-4 pb-6 mx-auto">

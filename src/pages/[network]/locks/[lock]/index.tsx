@@ -1,17 +1,8 @@
 import { LocksmithService } from "@unlock-protocol/unlock-js";
 import { NextPage, GetServerSideProps } from "next";
 import { ColumnLayout } from "../../../../components/ColumnLayout";
-import { LinkButton } from "../../../../components/LinkButton";
 import { app } from "../../../../config/app";
 import { createCheckoutURL, ogUrl, TokenData } from "../../../../utils";
-import {
-  SiSubstack as SubstackIcon,
-  SiDiscord as DiscordIcon,
-  SiInstagram as InstagramIcon,
-  SiMastodon as MastodonIcon,
-  SiTwitter as TwitterIcon,
-} from "react-icons/si";
-import { FiLink as LinkIcon } from "react-icons/fi";
 import { NextSeo } from "next-seo";
 import { customizeSEO } from "../../../../config/seo";
 import "urlpattern-polyfill";

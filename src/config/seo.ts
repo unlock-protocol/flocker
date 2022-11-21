@@ -1,12 +1,12 @@
 import type { DefaultSeoProps, NextSeoProps } from "next-seo";
+import { ogUrl } from "../utils";
 import { app } from "./app";
 
 export const { baseURL } = app;
 
 export const DEFAULT_SEO: DefaultSeoProps = {
   title: "Flocker",
-  description:
-    "Connect with your fans and followers nearly anywhere.",
+  description: "Connect with your fans and followers nearly anywhere.",
   openGraph: {
     type: "website",
     locale: "en_US",
@@ -14,7 +14,7 @@ export const DEFAULT_SEO: DefaultSeoProps = {
     site_name: "flocker",
     images: [
       {
-        url: `${baseURL}/images/unlock.png`,
+        url: ogUrl(new URL("/", app.baseURL)),
         alt: "flocker",
       },
     ],
