@@ -9,6 +9,7 @@ import { ContractsView } from "../components/ContractsView";
 import { NextSeo } from "next-seo";
 import { routes } from "../config/routes";
 import { SelectTwitterProfile } from "../components/SelectTwitterProfile";
+import { DummyProfile } from "../components/DummyProfile";
 
 export default function Home() {
   const { login, isAuthenticated, user, isAuthenticating } = useAuth();
@@ -29,7 +30,7 @@ export default function Home() {
       <Navigation />
       <ColumnLayout>
         <header className="box-border flex flex-col max-w-2xl gap-4 mx-auto">
-          <h1 className="text-5xl font-extrabold">
+          <h1 className="text-3xl font-extrabold sm:text-5xl">
             Connect with your fans and followers nearly anywhere.
           </h1>
           <h2 className="block text-lg text-gray-500 sm:text-xl">
@@ -62,6 +63,7 @@ export default function Home() {
             <ContractDeployBox twitterUsername={twitterUsername} />
           )}
           {isAuthenticated && !twitterUsername && <ContractsView user={user} />}
+          {!isAuthenticated && <DummyProfile />}
         </div>
       </ColumnLayout>
     </div>

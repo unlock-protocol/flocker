@@ -13,7 +13,7 @@ export interface Props {
   discord?: string;
   twitter?: string;
   mastodon?: string;
-  instagram: string;
+  instagram?: string;
   other?: string;
   substack?: string;
 }
