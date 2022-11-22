@@ -139,7 +139,7 @@ export function ContractDeployBox({ twitterUsername }: ContractDeployBoxProps) {
               });
             }}
           >
-            Deploy membership contract
+            Create membership contract
           </Button>
         </div>
       )}
