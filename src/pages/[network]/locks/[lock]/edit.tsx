@@ -58,11 +58,13 @@ const NextPage: NextPage = () => {
     }
   );
 
-  const { data: metadata, isInitialLoading: isMetadataLoading } =
-    useLockMetadata({
-      lockAddress: lock,
-      network: network,
-    });
+  const {
+    data: metadata,
+    isInitialLoading: isMetadataLoading,
+  } = useLockMetadata({
+    lockAddress: lock,
+    network: network,
+  });
 
   const { mutate: updateMetadata, isLoading: isUpdatingMetadata } = useMutation(
     {
@@ -148,11 +150,10 @@ const NextPage: NextPage = () => {
           />
           <Input
             disabled={isUpdatingMetadata}
-            type="url"
             {...register("discord")}
             icon={<DiscordIcon />}
             label="Discord"
-            placeholder="https://"
+            placeholder="Username#id"
             optional
           />
           <Input
@@ -184,11 +185,10 @@ const NextPage: NextPage = () => {
           />
           <Input
             disabled={isUpdatingMetadata}
-            type="url"
             {...register("mastodon")}
             icon={<MastodonIcon />}
             label="Mastodon"
-            placeholder="https://"
+            placeholder="@user@server.tld"
             optional
           />
           <Input
