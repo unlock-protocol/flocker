@@ -9,7 +9,6 @@ import { ContractsView } from "../components/ContractsView";
 import { NextSeo } from "next-seo";
 import { routes } from "../config/routes";
 import { SelectTwitterProfile } from "../components/SelectTwitterProfile";
-import { DummyProfile } from "../components/DummyProfile";
 
 export default function Home() {
   const { login, isAuthenticated, user, isAuthenticating } = useAuth();
@@ -63,7 +62,6 @@ export default function Home() {
             <ContractDeployBox twitterUsername={twitterUsername} />
           )}
           {isAuthenticated && !twitterUsername && <ContractsView user={user} />}
-          {!isAuthenticated && <DummyProfile />}
         </div>
       </ColumnLayout>
     </div>
