@@ -2,9 +2,15 @@ import { useQuery } from "@tanstack/react-query";
 import { SubgraphService } from "@unlock-protocol/unlock-js";
 import { app } from "../config/app";
 import networks from "@unlock-protocol/networks";
-import { Button, LoadingIcon } from "./Button";
+import { LoadingIcon } from "./Button";
 import { LockAddress } from "./LockAddress";
 import { useRouter } from "next/router";
+import {
+  FiEye as PreviewIcon,
+  FiEdit as EditIcon,
+  FiShare2 as ShareIcon,
+} from "react-icons/fi";
+import Link from "next/link";
 
 interface Props {
   user: string;
@@ -86,29 +92,40 @@ export function ContractsView({ user }: Props) {
                     network={app.defaultNetwork}
                   />
                 </div>
-                <div className="flex flex-col justify-end gap-4">
-                  {lock.metadata && (
-                    <Button
+                <div>
+                  <div role="group" className="inline-flex items-center gap-2">
+                    {lock.metadata && (
+                      <Link
+                        href={`/${app.defaultNetwork}/locks/${lock.address}/share?username=${lock.name}`}
+                        className="inline-flex items-center gap-2 px-2 py-1 font-medium text-white bg-blue-500 rounded-lg hover:bg-blue-400"
+                      >
+                        <ShareIcon />
+                        Share
+                      </Link>
+                    )}
+                    {lock.metadata && (
+                      <Link
+                        href={`/${app.defaultNetwork}/locks/${lock.address}`}
+                        className="inline-flex items-center gap-2 px-2 py-1 rounded-lg bg-gray-50 hover:bg-gray-100"
+                      >
+                        <PreviewIcon />
+                        Preview
+                      </Link>
+                    )}
+                    <Link
+                      href={`/${app.defaultNetwork}/locks/${lock.address}/edit?username=${lock.name}`}
+                      className="inline-flex items-center gap-2 px-2 py-1 rounded-lg bg-gray-50 hover:bg-gray-100"
                       onClick={(event) => {
                         event.preventDefault();
                         router.push(
-                          `/${app.defaultNetwork}/locks/${lock.address}/share?username=${lock.name}`
+                          `/${app.defaultNetwork}/locks/${lock.address}/edit?username=${lock.name}`
                         );
                       }}
                     >
-                      Share
-                    </Button>
-                  )}
-                  <Button
-                    onClick={(event) => {
-                      event.preventDefault();
-                      router.push(
-                        `/${app.defaultNetwork}/locks/${lock.address}/edit?username=${lock.name}`
-                      );
-                    }}
-                  >
-                    Edit
-                  </Button>
+                      <EditIcon />
+                      Edit
+                    </Link>
+                  </div>
                 </div>
               </div>
             ))}

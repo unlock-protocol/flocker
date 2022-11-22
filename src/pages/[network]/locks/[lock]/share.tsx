@@ -1,15 +1,17 @@
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useMemo } from "react";
-import { Button } from "../../../../components/Button";
 import { ColumnLayout } from "../../../../components/ColumnLayout";
 import { Navigation } from "../../../../components/Navigation";
 import { createCheckoutURL, ogUrl } from "../../../../utils";
-import NextImage from "next/image";
 import { NextSeo } from "next-seo";
 import { customizeSEO } from "../../../../config/seo";
 import { app } from "../../../../config/app";
-
+import { useLockMetadata } from "../../../../hooks/fetchHooks";
+import { LoadingIcon } from "../../../../components/Button";
+import { SiTwitter as TwitterIcon } from "react-icons/si";
+import { FiEye as PreviewIcon } from "react-icons/fi";
+import Link from "next/link";
 const partners = [
   {
     name: "Paragraph",
@@ -86,15 +88,22 @@ const NextPage: NextPage = () => {
   const lock = router.query.lock?.toString();
   const username = router.query.username?.toString();
   const network = Number(router.query.network);
+  const { data: metadata, isInitialLoading: isMetadataLoading } =
+    useLockMetadata({
+      lockAddress: lock,
+      network: network,
+    });
 
   const checkoutURL = useMemo(() => {
-    if (lock && network) {
+    if (lock && network && metadata) {
       return createCheckoutURL({
         network,
         lock,
+        icon: metadata.image,
+        title: metadata.name ? `${metadata.name} Membership` : undefined,
       });
     }
-  }, [lock, network]);
+  }, [lock, network, metadata]);
 
   const shareUrl = useMemo<string>(() => {
     const url = new URL("https://twitter.com/intent/tweet");
@@ -110,6 +119,10 @@ const NextPage: NextPage = () => {
     }
     return url.toString();
   }, [checkoutURL]);
+
+  if (isMetadataLoading) {
+    return <LoadingIcon />;
+  }
 
   return (
     <div>
@@ -134,24 +147,34 @@ const NextPage: NextPage = () => {
             membership!
           </h2>
         </header>
-        <div className="grid gap-6">
+        <div
+          className="grid border rounded-lg shadow-xl md:grid-cols-3 shadow-blue-50"
+          role="group"
+        >
           {checkoutURL && (
             <a
-              className="inline-flex items-center justify-center gap-2 px-4 py-2 font-medium text-white bg-blue-500 rounded-full cursor-pointer hover:bg-opacity-75 disabled:hover:bg-opacity-75 disabled:bg-opacity-75 disabled:cursor-not-allowed"
+              className="inline-flex items-center justify-center gap-2 px-4 py-2 font-medium text-black bg-white rounded-t-lg cursor-pointer md:rounded-l-lg hover:bg-gray-50 disabled:cursor-not-allowed"
               target="_blank"
               href={shareUrl}
               rel="noopener noreferrer"
             >
-              Share on Twitter
+              <TwitterIcon /> Share on Twitter
             </a>
           )}
+          <Link
+            className="inline-flex items-center justify-center gap-2 px-4 py-2 font-medium text-black bg-white cursor-pointer border-y md:border-y-0 md:border-x disabled:cursor-not-allowed hover:bg-gray-50"
+            href={`/${network}/locks/${lock}`}
+          >
+            <PreviewIcon />
+            Preview profile
+          </Link>
           <a
-            className="inline-flex items-center justify-center gap-2 px-4 py-2 font-medium text-black bg-white rounded-full shadow-xl cursor-pointer shadow-blue-50 hover:bg-opacity-75 disabled:hover:bg-opacity-75 disabled:bg-opacity-75 disabled:cursor-not-allowed"
+            className="inline-flex items-center justify-center gap-2 px-4 py-2 font-medium text-black bg-white rounded-b-lg cursor-pointer md:rounded-r-lg disabled:cursor-not-allowed hover:bg-gray-50"
             target="_blank"
             href="https://app.unlock-protocol.com/locks"
             rel="noopener noreferrer"
           >
-            Open Unlock Dashboard
+            Unlock Dashboard
           </a>
         </div>
 

@@ -19,10 +19,14 @@ export const createLocalStorageValue = <T = string>(key: string) => {
 interface Options {
   lock: string;
   network: number;
+  icon?: string;
+  title?: string;
 }
 
-export const createCheckoutURL = ({ network, lock }: Options) => {
+export const createCheckoutURL = ({ network, lock, icon, title }: Options) => {
   const checkoutConfig = {
+    title,
+    icon,
     locks: {
       [lock]: {
         network,
@@ -31,6 +35,7 @@ export const createCheckoutURL = ({ network, lock }: Options) => {
     },
     pessimistic: true,
   };
+
   const checkoutURL = new URL("/checkout", app.unlockApp);
   const redirectURL = new URL(`/${network}/locks/${lock}`, app.baseURL);
   checkoutURL.searchParams.append(
@@ -61,7 +66,7 @@ export interface TokenData {
 }
 
 export const toFormData = (props: TokenData) => {
-  const { attributes, name, background_color, youtube_url } = props;
+  const { attributes, ...rest } = props;
   const allItems = attributes?.filter(
     (item) => typeof item.value === "string" && !item.max_value
   );
@@ -78,15 +83,13 @@ export const toFormData = (props: TokenData) => {
   const other = record?.other;
 
   return {
-    name,
     discord,
     substack,
     website,
     instagram,
     mastodon,
     other,
-    youtube_url,
-    background_color,
+    ...rest,
   };
 };
 

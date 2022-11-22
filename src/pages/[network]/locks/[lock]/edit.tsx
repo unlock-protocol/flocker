@@ -17,7 +17,6 @@ import {
   Attribute,
   formDataToTokenAttributes,
   MetadataFormData,
-  toFormData,
   TokenData,
 } from "../../../../utils";
 import { useCallback, useEffect } from "react";
@@ -25,6 +24,7 @@ import { Navigation } from "../../../../components/Navigation";
 import { ColumnLayout } from "../../../../components/ColumnLayout";
 import { FaHashtag as BackgroundColorIcon } from "react-icons/fa";
 import { toast } from "react-hot-toast";
+import { useLockMetadata } from "../../../../hooks/fetchHooks";
 
 const NextPage: NextPage = () => {
   const { isAuthenticated, storage } = useAuth();
@@ -58,22 +58,11 @@ const NextPage: NextPage = () => {
     }
   );
 
-  const { data: metadata, isInitialLoading: isMetadataLoading } = useQuery(
-    ["metadata", lock, network],
-    async () => {
-      const response = await storage.lockMetadata(network, lock!);
-      const data = toFormData(response.data as TokenData);
-      return data;
-    },
-    {
-      enabled: isAuthenticated && !!lock && !!network,
-      onError(error: Error) {
-        console.error(error.message);
-      },
-      retry: false,
-      refetchOnMount: true,
-    }
-  );
+  const { data: metadata, isInitialLoading: isMetadataLoading } =
+    useLockMetadata({
+      lockAddress: lock,
+      network: network,
+    });
 
   const { mutate: updateMetadata, isLoading: isUpdatingMetadata } = useMutation(
     {

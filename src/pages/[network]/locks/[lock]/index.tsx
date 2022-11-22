@@ -41,6 +41,8 @@ const IndexPage: NextPage<Props> = ({ network, lock, tokenData }) => {
   const checkoutURL = createCheckoutURL({
     network,
     lock,
+    icon: tokenData.image,
+    title: tokenData.name,
   });
 
   return (

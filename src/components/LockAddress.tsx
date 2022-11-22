@@ -28,8 +28,8 @@ export function LockAddress({ lockAddress, network }: Props) {
             setIsCopied();
           }}
         >
-          {isCopied ? "Copied" : "Copy"}
           <CopyIcon />
+          {isCopied ? "Copied" : "Copy"}
         </button>
         {explorerURL && (
           <a
