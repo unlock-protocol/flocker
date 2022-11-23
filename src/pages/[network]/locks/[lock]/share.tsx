@@ -52,14 +52,14 @@ const partners = [
     url: "https://unlock-protocol.com/blog/guildxyz-launch",
     description: `Discord is the easiest way to talk over voice, video, and text. Talk,
         chat, hang out, and stay close with your friends and communities. Token gate your discord community with guild.xyz`,
-    youtube: null,
+    youtube: "https://www.youtube.com/embed/ClLaLlPm904",
   },
   {
     name: "Telegram",
     url: "https://unlock-protocol.com/guides/how-to-token-gate-telegram-with-unlock-protocol-and-guild-xyz/",
     description:
       "Telegram is a globally-accessible messaging and chat service. Token gate your telegram community with guild.xyz",
-    youtube: null,
+    youtube: "https://www.youtube.com/embed/ClLaLlPm904",
   },
   {
     name: "WordPress",
