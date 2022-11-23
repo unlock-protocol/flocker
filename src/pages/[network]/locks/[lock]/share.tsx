@@ -3,15 +3,14 @@ import { useRouter } from "next/router";
 import { useMemo } from "react";
 import { ColumnLayout } from "../../../../components/ColumnLayout";
 import { Navigation } from "../../../../components/Navigation";
-import { createCheckoutURL, ogUrl } from "../../../../utils";
+import { ogUrl } from "../../../../utils";
 import { NextSeo } from "next-seo";
 import { customizeSEO } from "../../../../config/seo";
 import { app } from "../../../../config/app";
-import { useLockMetadata } from "../../../../hooks/fetchHooks";
-import { LoadingIcon } from "../../../../components/Button";
 import { SiTwitter as TwitterIcon } from "react-icons/si";
 import { FiEye as PreviewIcon } from "react-icons/fi";
 import Link from "next/link";
+
 const partners = [
   {
     name: "Paragraph",
@@ -88,41 +87,26 @@ const NextPage: NextPage = () => {
   const lock = router.query.lock?.toString();
   const username = router.query.username?.toString();
   const network = Number(router.query.network);
-  const { data: metadata, isInitialLoading: isMetadataLoading } =
-    useLockMetadata({
-      lockAddress: lock,
-      network: network,
-    });
 
-  const checkoutURL = useMemo(() => {
-    if (lock && network && metadata) {
-      return createCheckoutURL({
-        network,
-        lock,
-        icon: metadata.image,
-        title: metadata.name ? `${metadata.name} Membership` : undefined,
-      });
-    }
-  }, [lock, network, metadata]);
+  const checkoutURL = new URL(
+    `/${network}/locks/${lock}/checkout`,
+    app.baseURL
+  ).toString();
 
   const shareUrl = useMemo<string>(() => {
     const url = new URL("https://twitter.com/intent/tweet");
     url.searchParams.set(
       "text",
-      "Claim a free membership from me and follow me anywhere on the web!\n\n"
+      "Claim a free membership from me and follow me anywhere on the web!"
     );
     if (checkoutURL) {
-      url.searchParams.set("url", checkoutURL);
+      url.searchParams.set("url", checkoutURL.trim());
     }
     if (checkoutURL) {
       url.searchParams.set("via", "unlockProtocol");
     }
     return url.toString();
   }, [checkoutURL]);
-
-  if (isMetadataLoading) {
-    return <LoadingIcon />;
-  }
 
   return (
     <div>
