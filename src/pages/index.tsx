@@ -69,22 +69,24 @@ export default function Home() {
             <ContractDeployBox twitterUsername={twitterUsername} />
           )}
           {isAuthenticated && !twitterUsername && <ContractsView user={user} />}
-          <div className="space-y-6">
-            <div className="space-y-2">
-              <h2 className="text-xl font-bold">
-                Get your flock off of Twitter
-              </h2>
-              <p className="text-gray-600">
-                Flocker helps you bring your Twitter followers with you to Web3
-                with an Unlock-powered membership smart contract.
-              </p>
+          {!isAuthenticated && (
+            <div className="space-y-6">
+              <div className="space-y-2">
+                <h2 className="text-xl font-bold">
+                  Get your flock off of Twitter
+                </h2>
+                <p className="text-gray-600">
+                  Flocker helps you bring your Twitter followers with you to
+                  Web3 with an Unlock-powered membership smart contract.
+                </p>
+              </div>
+              <ul className="relative ml-2 border-l border-gray-200">
+                {items.map((item, index) => (
+                  <ListItem {...item} key={index} />
+                ))}
+              </ul>
             </div>
-            <ul className="relative ml-2 border-l border-gray-200">
-              {items.map((item, index) => (
-                <ListItem {...item} key={index} />
-              ))}
-            </ul>
-          </div>
+          )}
         </div>
       </ColumnLayout>
     </div>
