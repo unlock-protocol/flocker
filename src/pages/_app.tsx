@@ -7,7 +7,7 @@ import { wagmiClient } from "../config/wagmi";
 import { Toaster } from "react-hot-toast";
 import { DefaultSeo } from "next-seo";
 import { DEFAULT_SEO } from "../config/seo";
-import { hotjar } from 'react-hotjar';
+import { hotjar } from "react-hotjar";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
 
@@ -28,8 +28,6 @@ const inter = Inter({
   variable: "--font-inter",
 });
 
-
-
 export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
 
@@ -37,11 +35,11 @@ export default function App({ Component, pageProps }: AppProps) {
     if (!hotjar.initialized()) {
       hotjar.initialize(3259412, 6);
     }
-  }, [])
+  }, []);
 
   useEffect(() => {
     if (hotjar.initialized()) {
-      hotjar.stateChange(router.asPath)
+      hotjar.stateChange(router.asPath);
     }
   }, [router.asPath]);
 

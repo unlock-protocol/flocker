@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --background: rgb(250, 251, 252);
+}
+
+html,
 body {
-  background-color: rgb(250, 251, 252);
+  background-color: var(--background);
+  @apply min-h-full;
 }

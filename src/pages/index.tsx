@@ -9,6 +9,13 @@ import { ContractsView } from "../components/ContractsView";
 import { NextSeo } from "next-seo";
 import { routes } from "../config/routes";
 import { SelectTwitterProfile } from "../components/SelectTwitterProfile";
+import {
+  FaShare as ShareIcon,
+  FaEdit as EditIcon,
+  FaRocket as FinishIcon,
+} from "react-icons/fa";
+import { IconType } from "react-icons";
+import { SiTwitter as TwitterIcon } from "react-icons/si";
 
 export default function Home() {
   const { login, isAuthenticated, user, isAuthenticating } = useAuth();
@@ -62,8 +69,70 @@ export default function Home() {
             <ContractDeployBox twitterUsername={twitterUsername} />
           )}
           {isAuthenticated && !twitterUsername && <ContractsView user={user} />}
+          <div className="space-y-6">
+            <div className="space-y-2">
+              <h2 className="text-xl font-bold">
+                Get your flock off of Twitter
+              </h2>
+              <p className="text-gray-600">
+                Flocker helps you bring your Twitter followers with you to Web3
+                with an Unlock-powered membership smart contract.
+              </p>
+            </div>
+            <ul className="relative ml-2 border-l border-gray-200">
+              {items.map((item, index) => (
+                <ListItem {...item} key={index} />
+              ))}
+            </ul>
+          </div>
         </div>
       </ColumnLayout>
     </div>
+  );
+}
+
+const items = [
+  {
+    text: "Enter your Twitter handle",
+    description: "This will be used as your contract name and icon.",
+    Icon: TwitterIcon,
+  },
+  {
+    text: "Create a free membership (smart contract)",
+    description:
+      "Smart contracts are programs on the blockchain. They allows us to setup recurring memberships and provide access pass without a middleman.",
+    Icon: EditIcon,
+  },
+  {
+    text: "Share the link to claim your membership card with your Twitter followers",
+    description:
+      "Your followers can claim your free membership with the link. This will in the form of a NFT.",
+    Icon: ShareIcon,
+  },
+  {
+    text: "Connect with them on any service that supports token-gated access",
+    description:
+      "You can now create communities, applications, etc and token gate them so only your members can access them. For example, use guild.xyz to token gate your exclusive discord and telegram.",
+    Icon: FinishIcon,
+  },
+];
+
+interface ListItemProps {
+  text: string;
+  description?: string;
+  Icon: IconType;
+}
+
+export function ListItem({ text, description, Icon }: ListItemProps) {
+  return (
+    <li className="mb-6 ml-6">
+      <span className="absolute inline-flex items-center justify-center p-1 bg-blue-200 rounded-full -left-3">
+        <Icon className="fill-blue-500" />
+      </span>
+      <h3 className="flex items-center mb-1 text-lg font-semibold text-gray-900">
+        {text}
+      </h3>
+      {description && <p className="text-gray-600">{description}</p>}
+    </li>
   );
 }
