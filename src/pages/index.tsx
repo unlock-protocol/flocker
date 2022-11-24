@@ -100,19 +100,19 @@ const items = [
   {
     text: "Create a free membership (smart contract)",
     description:
-      "Smart contracts are programs on the blockchain. They allows us to setup recurring memberships and provide access pass without a middleman.",
+      "Smart contracts are programs on the blockchain. They set up memberships and provide membership access passes.",
     Icon: EditIcon,
   },
   {
     text: "Share the link to claim your membership card with your Twitter followers",
     description:
-      "Your followers can claim your free membership with the link. This will in the form of a NFT.",
+      "Your followers can claim your free membership with the link. The membership will be in the form of an NFT.",
     Icon: ShareIcon,
   },
   {
     text: "Connect with them on any service that supports token-gated access",
     description:
-      "You can now create communities, applications, etc and token gate them so only your members can access them. For example, use guild.xyz to token gate your exclusive discord and telegram.",
+      "You can now create communities, content, applications, and more and token gate them so only your members can access them. For example, use Guild.xyz to token gate your exclusive Discord or Telegram.",
     Icon: FinishIcon,
   },
 ];
