@@ -1,6 +1,19 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Flocker.app
+
+[Flocker](https://flocker.app) helps you bring your Twitter followers with you to web3 with an Unlock-powered membership smart contract.
+
+![Flocker](./public/flocker.png)
 
 ## Getting Started
+
+### Setting up environment
+
+1. Rename the `.env.local.template` to `.env.local` file.
+1. Fill out the environment variables. For example, TWITTER_BEARER_TOKEN is required to interact with twitter API. You can get one by applying for a developer account and creating an application.
+
+### Develop
+
+This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 First, run the development server:
 
