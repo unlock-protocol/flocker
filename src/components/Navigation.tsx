@@ -13,6 +13,7 @@ export function Navigation() {
         <div>
           {isAuthenticated ? (
             <Button
+              secondary
               onClick={() => {
                 logout();
               }}
@@ -25,7 +26,7 @@ export function Navigation() {
                 login();
               }}
             >
-              Login
+              Sign-in
             </Button>
           )}
         </div>

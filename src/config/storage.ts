@@ -3,8 +3,9 @@ import axios from "axios";
 import { app } from "./app";
 import { createLocalStorageValue } from "../utils";
 const [getAccessToken, setAccessToken] = createLocalStorageValue("accessToken");
-const [getRefreshToken, setRefreshToken] =
-  createLocalStorageValue("refreshToken");
+const [getRefreshToken, setRefreshToken] = createLocalStorageValue(
+  "refreshToken"
+);
 const [_, setUser] = createLocalStorageValue("user");
 
 export const client = axios.create();
@@ -52,7 +53,7 @@ client.interceptors.response.use(
         };
 
         return client(originalConfig);
-      } catch (_error: any) {
+      } catch (_error) {
         if (_error.response && _error.response.data) {
           return Promise.reject(_error.response.data);
         }

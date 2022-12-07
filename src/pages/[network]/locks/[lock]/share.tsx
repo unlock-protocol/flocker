@@ -10,77 +10,7 @@ import { app } from "../../../../config/app";
 import { SiTwitter as TwitterIcon } from "react-icons/si";
 import { FiEye as PreviewIcon } from "react-icons/fi";
 import Link from "next/link";
-
-const partners = [
-  {
-    name: "Paragraph",
-    url: "https://paragraph.xyz/",
-    description: `
-        Paragraph is a service for Web3-powered newsletters where you can write
-        content, grow your audience and foster a community. No matter if your
-        readers are on web2 or web3, Paragraph turns your subscribers into
-        members.`,
-    youtube: "https://www.youtube.com/embed/KaMVpOnZveE",
-  },
-  {
-    name: "Highlight",
-    url: "https://highlight.xyz/",
-    description: `
-        Highlight is an end-to-end toolkit to bring web3 membership and rewards
-        to your fanbase, with no crypto experience required. In minutes, anyone
-        can build a custom-branded community home, with rich integrations that
-        offer ongoing utility and exclusive access.`,
-    youtube: "https://www.youtube.com/embed/LEfQ8zGWT4c",
-  },
-  {
-    name: "Geneva",
-    url: "http://geneva.com",
-    description: `Geneva is where your group chats, and gives you everything you need to
-        keep your groups, clubs, and communities organized and connected.`,
-    youtube: "https://www.youtube.com/embed/c1WKFrrf2QY",
-  },
-  {
-    name: "Tropee",
-    url: "https://www.tropee.com/",
-    description:
-      "Tropee is a collection of utilities you can use to create events, content, raffles, and more for your members.",
-    youtube: "https://www.youtube.com/embed/7Mg6sif6iYI",
-  },
-  {
-    name: "Discord",
-    url: "https://unlock-protocol.com/blog/guildxyz-launch",
-    description: `Discord is the easiest way to talk over voice, video, and text. Talk,
-        chat, hang out, and stay close with your friends and communities. Token gate your discord community with guild.xyz`,
-    youtube: "https://www.youtube.com/embed/ClLaLlPm904",
-  },
-  {
-    name: "Telegram",
-    url: "https://unlock-protocol.com/guides/how-to-token-gate-telegram-with-unlock-protocol-and-guild-xyz/",
-    description:
-      "Telegram is a globally-accessible messaging and chat service. Token gate your telegram community with guild.xyz",
-    youtube: "https://www.youtube.com/embed/ClLaLlPm904",
-  },
-  {
-    name: "WordPress",
-    url: "https://wordpress.org/plugins/pmpro-unlock/",
-    description: (
-      <p>
-        WordPress powers 43% of websites. You can create members-only areas for
-        WordPress sites using the{" "}
-        <a href="https://wordpress.org/plugins/unlock-protocol/">
-          Unlock WordPress plugin
-        </a>{" "}
-        or{" "}
-        <a href="https://wordpress.org/plugins/pmpro-unlock/">
-          PaidMembershipsPro
-        </a>
-        .
-      </p>
-    ),
-    image:
-      "https://s3.us-west-2.amazonaws.com/secure.notion-static.com/98f1e958-db98-4b2f-ba99-1fdde2d5b0a5/Screen_Shot_2022-11-19_at_12.33.40_PM.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20221121%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20221121T174555Z&X-Amz-Expires=86400&X-Amz-Signature=4c9d8d978dc003dbc2095cd6be988a9e6ad6920081e39ba51fc36734a78b2c13&X-Amz-SignedHeaders=host&response-content-disposition=filename%3D%22Screen%2520Shot%25202022-11-19%2520at%252012.33.40%2520PM.png%22&x-id=GetObject",
-  },
-];
+import partners from "../../../../config/partners";
 
 const NextPage: NextPage = () => {
   const router = useRouter();

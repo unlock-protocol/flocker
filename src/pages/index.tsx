@@ -40,9 +40,10 @@ export default function Home() {
             Connect with your fans and followers nearly anywhere.
           </h1>
           <h2 className="block text-lg text-gray-500 sm:text-xl">
-            Create your own membership smart contract in five minutes.
+            Create your own membership smart contract in 1 minute!
           </h2>
         </header>
+
         <div className="grid gap-6 mt-6">
           {!twitterUsername && (
             <SelectTwitterProfile
@@ -106,7 +107,8 @@ const items = [
     Icon: EditIcon,
   },
   {
-    text: "Share the link to claim your membership card with your Twitter followers",
+    text:
+      "Share the link to claim your membership card with your Twitter followers",
     description:
       "Your followers can claim your free membership with the link. The membership will be in the form of an NFT.",
     Icon: ShareIcon,

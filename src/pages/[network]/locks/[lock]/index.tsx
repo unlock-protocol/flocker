@@ -2,15 +2,27 @@ import { LocksmithService } from "@unlock-protocol/unlock-js";
 import { NextPage, GetServerSideProps } from "next";
 import { ColumnLayout } from "../../../../components/ColumnLayout";
 import { app } from "../../../../config/app";
-import { createCheckoutURL, ogUrl, TokenData } from "../../../../utils";
+import {
+  createCheckoutURL,
+  isUserLockManager,
+  ogUrl,
+  TokenData,
+} from "../../../../utils";
 import { NextSeo } from "next-seo";
 import { customizeSEO } from "../../../../config/seo";
 import "urlpattern-polyfill";
 import { Profile } from "../../../../components/Profile";
 import { ProfileLink } from "../../../../components/ProfileLink";
+import { useAuth } from "../../../../hooks/useAuth";
+import { Navigation } from "../../../../components/Navigation";
+import { BecomeMember } from "../../../../components/BecomeMember";
+import { EditFlocker } from "../../../../components/EditFlocker";
+import { useMembership } from "../../../../hooks/useMembership";
+import { useLock } from "../../../../hooks/useLock";
+import { ShareFlocker } from "../../../../components/ShareFlocker";
 interface Props {
   network: number;
-  lock: string;
+  lockAddress: string;
   tokenData: TokenData;
 }
 
@@ -25,7 +37,11 @@ const getTwitterHandle = (link?: string) => {
   } catch {}
 };
 
-const IndexPage: NextPage<Props> = ({ network, lock, tokenData }) => {
+const IndexPage: NextPage<Props> = ({ network, lockAddress, tokenData }) => {
+  const { isAuthenticated, user } = useAuth();
+  const { isMember, isLoading } = useMembership(network, lockAddress, user);
+  const { data: lock } = useLock(network, lockAddress);
+
   const links = (tokenData.attributes || [])
     .filter(
       (item) =>
@@ -38,12 +54,7 @@ const IndexPage: NextPage<Props> = ({ network, lock, tokenData }) => {
       return acc;
     }, {});
 
-  const checkoutURL = createCheckoutURL({
-    network,
-    lock,
-    icon: tokenData.image,
-    title: tokenData.name,
-  });
+  const isLockManager = isUserLockManager(lock, user);
 
   return (
     <div className="flex flex-col flex-1 h-screen">
@@ -58,34 +69,30 @@ const IndexPage: NextPage<Props> = ({ network, lock, tokenData }) => {
           },
         })}
       />
-      <nav className="sticky top-0 z-30 bg-opacity-75 border-b border-gray-100 backdrop-blur backdrop-filter firefox:bg-opacity-90">
-        <div className="flex justify-end w-full max-w-2xl p-2 mx-auto">
-          <button
-            className="inline-flex items-center px-4 py-2 font-bold text-white bg-gray-900 rounded-full hover:bg-gray-800"
-            onClick={(event) => {
-              event.preventDefault();
-              window.open(checkoutURL.toString());
-            }}
-          >
-            Claim membership
-          </button>
-        </div>
-      </nav>
+      <Navigation />
+
       <ColumnLayout>
         <Profile
           name={tokenData.name}
           description={tokenData.description}
           imageURL={tokenData.image}
         />
-        <ProfileLink
-          twitter={links.twitter}
-          mastodon={links.mastodon}
-          instagram={links.instagram}
-          discord={links.discord}
-          website={links.website}
-          other={links.other}
-          substack={links.substack}
-        />
+        {isLockManager && <ShareFlocker network={137} address={lockAddress} />}
+        {!isLockManager && !isMember && (
+          <BecomeMember network={137} address={lockAddress} />
+        )}
+        {(isMember || isLockManager) && (
+          <ProfileLink
+            twitter={links.twitter}
+            mastodon={links.mastodon}
+            instagram={links.instagram}
+            discord={links.discord}
+            website={links.website}
+            other={links.other}
+            substack={links.substack}
+          />
+        )}
+        {isLockManager && <EditFlocker network={137} address={lockAddress} />}
       </ColumnLayout>
     </div>
   );
@@ -93,10 +100,10 @@ const IndexPage: NextPage<Props> = ({ network, lock, tokenData }) => {
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   try {
-    const lock = ctx.query.lock?.toString();
+    const lockAddress = ctx.query.lock?.toString();
     const network = Number(ctx.query.network);
     const service = new LocksmithService(undefined, app.locksmith);
-    const response = await service.lockMetadata(network, lock!);
+    const response = await service.lockMetadata(network, lockAddress!);
     const tokenData = response.data;
     return {
       props: {
@@ -105,7 +112,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
           acc[key] = value || null;
           return acc;
         }, {} as any),
-        lock,
+        lockAddress,
         network,
       },
     };

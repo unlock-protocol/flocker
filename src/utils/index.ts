@@ -1,4 +1,4 @@
-import { app } from "./config/app";
+import { app } from "../config/app";
 
 export const createLocalStorageValue = <T = string>(key: string) => {
   const getKey = (): T | undefined => {
@@ -17,18 +17,23 @@ export const createLocalStorageValue = <T = string>(key: string) => {
 };
 
 interface Options {
-  lock: string;
+  lockAddress: string;
   network: number;
   icon?: string;
   title?: string;
 }
 
-export const createCheckoutURL = ({ network, lock, icon, title }: Options) => {
+export const createCheckoutURL = ({
+  network,
+  lockAddress,
+  icon,
+  title,
+}: Options) => {
   const checkoutConfig = {
     title,
     icon,
     locks: {
-      [lock]: {
+      [lockAddress]: {
         network,
         skipRecipient: true,
       },
@@ -37,7 +42,7 @@ export const createCheckoutURL = ({ network, lock, icon, title }: Options) => {
   };
 
   const checkoutURL = new URL("/checkout", app.unlockApp);
-  const redirectURL = new URL(`/${network}/locks/${lock}`, app.baseURL);
+  const redirectURL = new URL(`/${network}/locks/${lockAddress}`, app.baseURL);
   checkoutURL.searchParams.append(
     "paywallConfig",
     JSON.stringify(checkoutConfig)
@@ -139,4 +144,15 @@ export const ogUrl = (url: string | URL) => {
   const og = new URL("/api/og", app.baseURL);
   og.searchParams.append("url", url?.toString());
   return og.toString();
+};
+
+export const isUserLockManager = (lock: any, user: string) => {
+  if (!lock?.lockManagers) {
+    return false;
+  }
+  return (
+    lock?.lockManagers
+      .map((manager: string) => manager.toLowerCase())
+      .indexOf(user.toLowerCase()) >= 0
+  );
 };
