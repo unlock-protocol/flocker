@@ -1,6 +1,5 @@
 import {
   SiSubstack as SubstackIcon,
-  SiDiscord as DiscordIcon,
   SiInstagram as InstagramIcon,
   SiMastodon as MastodonIcon,
   SiTwitter as TwitterIcon,
@@ -67,13 +66,6 @@ export function ProfileLinks({ links }: Props) {
           icon={<MastodonIcon />}
           href={links.mastodon}
           label="Follow me on mastodon"
-        />
-      )}
-      {links.discord && (
-        <LinkButton
-          icon={<DiscordIcon />}
-          href={links.discord}
-          label="Join my discord"
         />
       )}
       {links.other && (

@@ -83,14 +83,12 @@ export const toFormData = (props: TokenData) => {
 
   const twitter = record?.twitter;
   const website = record?.website;
-  const discord = record?.discord;
   const substack = record?.substack;
   const instagram = record?.instagram;
   const mastodon = record?.mastodon;
   const other = record?.other;
   const formData = {
     twitter,
-    discord,
     substack,
     website,
     instagram,
@@ -118,7 +116,6 @@ export const formDataToTokenAttributes = (formData: MetadataFormData) => {
     "twitter",
     "website",
     "substack",
-    "discord",
     "instagram",
     "mastodon",
     "twitter",

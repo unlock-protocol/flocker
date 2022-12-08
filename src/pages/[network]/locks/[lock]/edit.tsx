@@ -6,7 +6,6 @@ import { app } from "../../../../config/app";
 import { HiOutlineClipboardCopy as CopyLineIcon } from "react-icons/hi";
 import {
   SiSubstack as SubstackIcon,
-  SiDiscord as DiscordIcon,
   SiInstagram as InstagramIcon,
   SiMastodon as MastodonIcon,
   SiYoutube as YoutubeIcon,
@@ -268,15 +267,6 @@ const EditPage: NextPage = () => {
             icon={<TwitterIcon />}
             label="Twitter"
             placeholder="https://twitter.com/..."
-            optional
-          />
-
-          <Input
-            disabled={isUpdatingMetadata}
-            {...register("discord")}
-            icon={<DiscordIcon />}
-            label="Discord"
-            placeholder="Username#id"
             optional
           />
 

@@ -128,7 +128,10 @@ export function ContractDeployBox({ twitterUsername }: ContractDeployBoxProps) {
         </div>
       ) : (
         <div className="grid gap-6">
-          <p>Are you ready?</p>
+          <p>
+            Are you ready? We will now create your membership contract on
+            Polygon. It should take less than 1 minute.
+          </p>
           <Button
             loading={isContractDeploying}
             onClick={() => {

@@ -1,4 +1,5 @@
 import { FiLink as LinkIcon } from "react-icons/fi";
+import { SiDiscord } from "react-icons/si";
 
 const partners = [
   {
@@ -46,9 +47,10 @@ const partners = [
   {
     name: "Discord with Guild.xyz",
     attribute: "discord",
+    icon: <SiDiscord />,
     url: "https://unlock-protocol.com/blog/guildxyz-launch",
     description: `Discord is the easiest way to talk over voice, video, and text. Talk,
-        chat, hang out, and stay close with your friends and communities. Token gate your discord community with guild.xyz`,
+        chat, hang out, and stay close with your friends and communities. Token gate your discord server with guild.xyz`,
     youtube: "https://www.youtube.com/embed/ClLaLlPm904",
   },
   {
