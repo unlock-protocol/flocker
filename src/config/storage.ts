@@ -54,8 +54,10 @@ client.interceptors.response.use(
 
         return client(originalConfig);
       } catch (_error) {
-        if (_error.response && _error.response.data) {
-          return Promise.reject(_error.response.data);
+        // @ts-expect-error
+        const data = _error?.response?.data;
+        if (data) {
+          return Promise.reject(data);
         }
         return Promise.reject(_error);
       }

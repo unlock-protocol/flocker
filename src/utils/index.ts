@@ -1,4 +1,5 @@
 import { app } from "../config/app";
+import partners from "../config/partners";
 
 export const createLocalStorageValue = <T = string>(key: string) => {
   const getKey = (): T | undefined => {
@@ -80,14 +81,15 @@ export const toFormData = (props: TokenData) => {
     return acc;
   }, {});
 
+  const twitter = record?.twitter;
   const website = record?.website;
   const discord = record?.discord;
   const substack = record?.substack;
   const instagram = record?.instagram;
   const mastodon = record?.mastodon;
   const other = record?.other;
-
-  return {
+  const formData = {
+    twitter,
     discord,
     substack,
     website,
@@ -96,36 +98,39 @@ export const toFormData = (props: TokenData) => {
     other,
     ...rest,
   };
+  partners.forEach((partner) => {
+    if (record) {
+      // @ts-expect-error
+      formData[partner.attribute] = record[partner.attribute];
+    }
+  });
+
+  return formData;
 };
 
 export interface MetadataFormData {
-  website?: string;
-  instagram?: string;
-  mastodon?: string;
-  substack?: string;
-  discord?: string;
-  youtube_url?: string;
-  background_color?: string;
-  other?: string;
+  [key: string]: string;
 }
 
 export const formDataToTokenAttributes = (formData: MetadataFormData) => {
   const { background_color, ...rest } = formData;
+  const acceptedAttributes = [
+    "twitter",
+    "website",
+    "substack",
+    "discord",
+    "instagram",
+    "mastodon",
+    "twitter",
+    "other",
+  ];
+
+  partners.forEach((partner) => {
+    acceptedAttributes.push(partner.attribute);
+  });
+
   const attributes = Object.entries(rest)
-    .filter(
-      ([key, value]) =>
-        key &&
-        value &&
-        [
-          "website",
-          "substack",
-          "discord",
-          "instagram",
-          "mastodon",
-          "twitter",
-          "other",
-        ].includes(key)
-    )
+    .filter(([key, value]) => key && value && acceptedAttributes.includes(key))
     .map(
       ([key, value]) =>
         ({

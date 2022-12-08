@@ -54,7 +54,7 @@ export function SelectTwitterProfile({
     <>
       <div className="grid gap-6">
         <Input
-          label="Enter your Twitter username:"
+          label="Enter your Twitter username to deploy a new membership contract"
           icon={<FiAtSign size={20} />}
           value={username}
           disabled={isLoading}

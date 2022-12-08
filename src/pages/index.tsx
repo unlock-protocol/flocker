@@ -45,6 +45,8 @@ export default function Home() {
         </header>
 
         <div className="grid gap-6 mt-6">
+          {isAuthenticated && !twitterUsername && <ContractsView user={user} />}
+
           {!twitterUsername && (
             <SelectTwitterProfile
               twitterUsername={twitterUsername}
@@ -69,8 +71,7 @@ export default function Home() {
           {twitterUsername && isAuthenticated && (
             <ContractDeployBox twitterUsername={twitterUsername} />
           )}
-          {isAuthenticated && !twitterUsername && <ContractsView user={user} />}
-          {!isAuthenticated && (
+          {!isAuthenticated && !twitterUsername && (
             <div className="space-y-6">
               <div className="space-y-2">
                 <h2 className="text-xl font-bold">

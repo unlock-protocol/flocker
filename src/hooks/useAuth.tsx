@@ -9,7 +9,7 @@ import { app } from "../config/app";
 export function useAuth() {
   const router = useRouter();
   const code = router.query?.code?.toString();
-  const [isAuthenticating, setIsAuthenticating] = useState(false);
+  const [isAuthenticating, setIsAuthenticating] = useState(true);
   const [user, setUser] = useLocalStorageState("user", {
     defaultValue: "",
   });
@@ -58,6 +58,7 @@ export function useAuth() {
 
   useEffect(() => {
     if (!code) {
+      setIsAuthenticating(false);
       return;
     }
     const onCode = async () => {

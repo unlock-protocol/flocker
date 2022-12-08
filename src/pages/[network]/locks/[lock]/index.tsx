@@ -12,7 +12,7 @@ import { NextSeo } from "next-seo";
 import { customizeSEO } from "../../../../config/seo";
 import "urlpattern-polyfill";
 import { Profile } from "../../../../components/Profile";
-import { ProfileLink } from "../../../../components/ProfileLink";
+import { ProfileLinks } from "../../../../components/ProfileLinks";
 import { useAuth } from "../../../../hooks/useAuth";
 import { Navigation } from "../../../../components/Navigation";
 import { BecomeMember } from "../../../../components/BecomeMember";
@@ -81,17 +81,7 @@ const IndexPage: NextPage<Props> = ({ network, lockAddress, tokenData }) => {
         {!isLockManager && !isMember && (
           <BecomeMember network={137} address={lockAddress} />
         )}
-        {(isMember || isLockManager) && (
-          <ProfileLink
-            twitter={links.twitter}
-            mastodon={links.mastodon}
-            instagram={links.instagram}
-            discord={links.discord}
-            website={links.website}
-            other={links.other}
-            substack={links.substack}
-          />
-        )}
+        {(isMember || isLockManager) && <ProfileLinks links={links} />}
         {isLockManager && <EditFlocker network={137} address={lockAddress} />}
       </ColumnLayout>
     </div>
@@ -105,6 +95,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     const service = new LocksmithService(undefined, app.locksmith);
     const response = await service.lockMetadata(network, lockAddress!);
     const tokenData = response.data;
+
     return {
       props: {
         // Serialize undefined into null

@@ -7,72 +7,78 @@ import {
 } from "react-icons/si";
 import { FiLink as LinkIcon } from "react-icons/fi";
 import { LinkButton } from "./LinkButton";
+import partners from "../config/partners";
 
-export interface Props {
-  website?: string;
-  discord?: string;
-  twitter?: string;
-  mastodon?: string;
-  instagram?: string;
-  other?: string;
-  substack?: string;
+export interface Links {
+  [key: string]: string;
 }
 
-export function ProfileLink({
-  discord,
-  twitter,
-  website,
-  mastodon,
-  instagram,
-  other,
-  substack,
-}: Props) {
+export interface Props {
+  links: Links;
+}
+
+export function ProfileLinks({ links }: Props) {
   return (
     <div className="grid gap-6 py-6">
-      {website && (
+      {partners.map((partner, i) => {
+        if (links[partner.attribute]) {
+          return (
+            <LinkButton
+              key={i}
+              icon={partner.icon || <LinkIcon />}
+              href={links[partner.attribute]}
+              label={partner.name}
+            />
+          );
+        }
+      })}
+
+      {links.website && (
         <LinkButton
           icon={<LinkIcon />}
-          href={website}
+          href={links.website}
           label="My personal website"
         />
       )}
-      {twitter && (
+      {links.twitter && (
         <LinkButton
           icon={<TwitterIcon />}
-          href={twitter}
+          href={links.twitter}
           label="Follow me on twitter"
         />
       )}
 
-      {substack && (
+      {links.substack && (
         <LinkButton
           icon={<SubstackIcon />}
-          href={substack}
+          href={links.substack}
           label="Subscribe on substack"
         />
       )}
-      {instagram && (
+      {links.instagram && (
         <LinkButton
           icon={<InstagramIcon />}
-          href={instagram}
+          href={links.instagram}
           label="Follow me on instagram"
         />
       )}
-      {mastodon && (
+      {links.mastodon && (
         <LinkButton
           icon={<MastodonIcon />}
-          href={mastodon}
+          href={links.mastodon}
           label="Follow me on mastodon"
         />
       )}
-      {discord && (
+      {links.discord && (
         <LinkButton
           icon={<DiscordIcon />}
-          href={discord}
+          href={links.discord}
           label="Join my discord"
         />
       )}
-      {other && <LinkButton icon={<LinkIcon />} href={other} label="Other" />}
+      {links.other && (
+        <LinkButton icon={<LinkIcon />} href={links.other} label="Other" />
+      )}
     </div>
   );
 }

@@ -106,6 +106,10 @@ export function ContractDeployBox({ twitterUsername }: ContractDeployBoxProps) {
       {lockContract ? (
         <div>
           <div className="inset-0 grid gap-6 p-4 bg-white shadow-2xl rounded-xl shadow-blue-200">
+            <p className="mt-4 text-lg ">
+              🎉 You successfully created a contract. Let&apos;s configure your
+              flocker links!
+            </p>
             <LockAddress
               lockAddress={lockContract.address}
               network={lockContract.network}
@@ -121,10 +125,6 @@ export function ContractDeployBox({ twitterUsername }: ContractDeployBoxProps) {
               Next
             </Button>
           </div>
-          <p className="mt-4 text-gray-500">
-            You successfully created a contract. Let&apos;s add other places
-            where people can find you.
-          </p>
         </div>
       ) : (
         <div className="grid gap-6">

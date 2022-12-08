@@ -4,9 +4,10 @@ import { useState } from "react";
 
 interface FormLinkProps {
   partner: any;
+  register: (name: string) => any;
 }
 
-export const FormLink = ({ partner, ...rest }: FormLinkProps) => {
+export const FormLink = ({ partner, register }: FormLinkProps) => {
   const [expanded, setExpanded] = useState(false);
   const expand = (event: any) => {
     event.preventDefault();
@@ -23,13 +24,16 @@ export const FormLink = ({ partner, ...rest }: FormLinkProps) => {
         >
           {partner.name}
         </a>
-        <button className="" onClick={expand}>
-          {expanded ? "-" : "?"}
-        </button>
       </h2>
       {/* transition duration-200 ease-in-out text-brand-ui-primary  */}
+      <div className="text-gray-600 mb-6">
+        {partner.description}{" "}
+        <button className="underline" onClick={expand}>
+          {expanded ? "Less" : "Learn more"}
+        </button>
+        .
+      </div>
       <div className={expanded ? "" : "hidden"}>
-        <div className="text-gray-600 mb-6">{partner.description}</div>
         {partner.youtube && (
           <iframe
             className="w-full rounded aspect-video"
@@ -47,12 +51,12 @@ export const FormLink = ({ partner, ...rest }: FormLinkProps) => {
         )}
       </div>
       <Input
+        {...register(partner.attribute)}
         optional
-        type="url"
+        type={partner.type || "url"}
         icon={partner.icon || <LinkIcon />}
-        label="URL"
-        placeholder="https://"
-        {...rest}
+        label={partner.label || "URL"}
+        placeholder={partner.placeholder || "https://"}
       />
     </section>
   );

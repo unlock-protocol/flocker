@@ -37,6 +37,7 @@ export const ShareFlocker = ({ address, network }: ShareFlockerProps) => {
       >
         Invite new followers:
       </label>
+
       <textarea
         id="message"
         rows={3}

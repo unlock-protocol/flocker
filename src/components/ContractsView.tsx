@@ -77,7 +77,9 @@ export function ContractsView({ user }: Props) {
       {!isLocksLoading && locks && locks?.length > 0 && (
         <div className="pt-6">
           <h3 className="text-lg font-bold sm:text-xl">
-            Your membership contracts
+            {locks?.length > 1
+              ? "Your membership contracts"
+              : "Your membership contract"}
           </h3>
           <div className="grid gap-6 pt-2 sm:grid-cols-2">
             {locks?.map((lock) => (
@@ -93,38 +95,26 @@ export function ContractsView({ user }: Props) {
                   />
                 </div>
                 <div>
-                  <div role="group" className="inline-flex items-center gap-2">
-                    {lock.metadata && (
+                  <div role="group" className="flex items-center gap-2">
+                    <>
+                      {lock.metadata && (
+                        <Link
+                          href={`/${app.defaultNetwork}/locks/${lock.address}`}
+                          className="basis-1/2 inline-flex items-center gap-2 px-2 py-1 font-medium text-white bg-blue-500 rounded-lg hover:bg-blue-400"
+                        >
+                          <PreviewIcon />
+                          View
+                        </Link>
+                      )}
+
                       <Link
-                        href={`/${app.defaultNetwork}/locks/${lock.address}/share?username=${lock.name}`}
-                        className="inline-flex items-center gap-2 px-2 py-1 font-medium text-white bg-blue-500 rounded-lg hover:bg-blue-400"
+                        href={`/${app.defaultNetwork}/locks/${lock.address}/edit`}
+                        className="basis-1/2 inline-flex items-center gap-2 px-2 py-1 font-medium text-white bg-blue-500 rounded-lg hover:bg-blue-400"
                       >
-                        <ShareIcon />
-                        Share
+                        <EditIcon />
+                        Configure
                       </Link>
-                    )}
-                    {lock.metadata && (
-                      <Link
-                        href={`/${app.defaultNetwork}/locks/${lock.address}`}
-                        className="inline-flex items-center gap-2 px-2 py-1 rounded-lg bg-gray-50 hover:bg-gray-100"
-                      >
-                        <PreviewIcon />
-                        Preview
-                      </Link>
-                    )}
-                    <Link
-                      href={`/${app.defaultNetwork}/locks/${lock.address}/edit?username=${lock.name}`}
-                      className="inline-flex items-center gap-2 px-2 py-1 rounded-lg bg-gray-50 hover:bg-gray-100"
-                      onClick={(event) => {
-                        event.preventDefault();
-                        router.push(
-                          `/${app.defaultNetwork}/locks/${lock.address}/edit?username=${lock.name}`
-                        );
-                      }}
-                    >
-                      <EditIcon />
-                      Edit
-                    </Link>
+                    </>
                   </div>
                 </div>
               </div>
