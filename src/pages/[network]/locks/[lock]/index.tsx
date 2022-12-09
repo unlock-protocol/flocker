@@ -62,7 +62,9 @@ const IndexPage: NextPage<Props> = ({ network, lockAddress, tokenData }) => {
         {...customizeSEO({
           description: tokenData.description,
           title: tokenData.name,
-          imagePath: ogUrl(new URL(`/${network}/locks/${lock}`, app.baseURL)),
+          imagePath: ogUrl(
+            new URL(`/${network}/locks/${lock?.address}`, app.baseURL)
+          ),
           twitter: {
             handle: getTwitterHandle(links.twitter),
             site: links.twitter,
