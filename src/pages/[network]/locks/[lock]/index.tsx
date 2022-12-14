@@ -75,7 +75,7 @@ const IndexPage: NextPage<Props> = ({ network, lockAddress, tokenData }) => {
         <Profile
           name={tokenData.name}
           description={tokenData.description}
-          imageURL={tokenData.image}
+          imageURL={tokenData.image || "/logo.svg"}
           externalURL={tokenData.external_url}
         />
         {isLockManager && <ShareFlocker network={137} address={lockAddress} />}
