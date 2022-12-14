@@ -82,7 +82,7 @@ const IndexPage: NextPage<Props> = ({ network, lockAddress, tokenData }) => {
         {!isLockManager && !isMember && (
           <BecomeMember network={137} address={lockAddress} />
         )}
-        {(isMember || isLockManager) && <ProfileLinks links={links} />}
+        <ProfileLinks hide={!isMember && !isLockManager} links={links} />
         {isLockManager && <EditFlocker network={137} address={lockAddress} />}
       </ColumnLayout>
     </div>

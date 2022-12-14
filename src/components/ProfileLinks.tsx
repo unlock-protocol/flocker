@@ -14,15 +14,21 @@ export interface Links {
 
 export interface Props {
   links: Links;
+  hide: boolean;
 }
 
-export function ProfileLinks({ links }: Props) {
+export function ProfileLinks({ hide, links }: Props) {
+  const classes = ["grid", "gap-6", "py-6"];
+  if (hide) {
+    classes.push("blur-sm");
+  }
   return (
-    <div className="grid gap-6 py-6">
+    <div className={classes.join(" ")}>
       {partners.map((partner, i) => {
         if (links[partner.attribute]) {
           return (
             <LinkButton
+              hide={hide}
               key={i}
               icon={partner.icon || <LinkIcon />}
               href={links[partner.attribute]}
@@ -34,6 +40,7 @@ export function ProfileLinks({ links }: Props) {
 
       {links.website && (
         <LinkButton
+          hide={hide}
           icon={<LinkIcon />}
           href={links.website}
           label="My personal website"
@@ -42,6 +49,7 @@ export function ProfileLinks({ links }: Props) {
       {links.twitter && (
         <LinkButton
           icon={<TwitterIcon />}
+          hide={hide}
           href={links.twitter}
           label="Follow me on twitter"
         />
@@ -49,6 +57,7 @@ export function ProfileLinks({ links }: Props) {
 
       {links.substack && (
         <LinkButton
+          hide={hide}
           icon={<SubstackIcon />}
           href={links.substack}
           label="Subscribe on substack"
@@ -56,6 +65,7 @@ export function ProfileLinks({ links }: Props) {
       )}
       {links.instagram && (
         <LinkButton
+          hide={hide}
           icon={<InstagramIcon />}
           href={links.instagram}
           label="Follow me on instagram"
@@ -63,13 +73,19 @@ export function ProfileLinks({ links }: Props) {
       )}
       {links.mastodon && (
         <LinkButton
+          hide={hide}
           icon={<MastodonIcon />}
           href={links.mastodon}
           label="Follow me on mastodon"
         />
       )}
       {links.other && (
-        <LinkButton icon={<LinkIcon />} href={links.other} label="Other" />
+        <LinkButton
+          hide={hide}
+          icon={<LinkIcon />}
+          href={links.other}
+          label="Other"
+        />
       )}
     </div>
   );

@@ -22,17 +22,18 @@ export const BecomeMember = ({ address, network }: BecomeMemberProps) => {
     );
   };
 
+  let actionButton = <Button onClick={join}>Become a member now!</Button>;
+
   if (!isAuthenticated) {
-    return (
-      <div className="flex flex-col mt-12">
-        <Button onClick={() => login()}>Sign-in</Button>
-      </div>
-    );
+    actionButton = <Button onClick={() => login()}>Sign-in</Button>;
   }
 
   return (
-    <div className="flex flex-col mt-12">
-      <Button onClick={join}>Become a member now!</Button>
+    <div className="absolute inset-x-0 z-10 pt-6">
+      <div className="flex flex-col mt-12 items-center">
+        <span className="font-bold	">🔒 Members only!</span>
+        <div className="">{actionButton}</div>
+      </div>
     </div>
   );
 };
