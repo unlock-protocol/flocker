@@ -18,7 +18,7 @@ import { Navigation } from "../../../../components/Navigation";
 import { BecomeMember } from "../../../../components/BecomeMember";
 import { EditFlocker } from "../../../../components/EditFlocker";
 import { useMembership } from "../../../../hooks/useMembership";
-import { useLock } from "../../../../hooks/useLock";
+import { getLock, useLock } from "../../../../hooks/useLock";
 import { ShareFlocker } from "../../../../components/ShareFlocker";
 interface Props {
   network: number;
@@ -55,7 +55,6 @@ const IndexPage: NextPage<Props> = ({ network, lockAddress, tokenData }) => {
     }, {});
 
   const isLockManager = isUserLockManager(lock, user);
-
   return (
     <div className="flex flex-col flex-1 h-screen">
       <NextSeo
@@ -72,12 +71,12 @@ const IndexPage: NextPage<Props> = ({ network, lockAddress, tokenData }) => {
         })}
       />
       <Navigation />
-
       <ColumnLayout>
         <Profile
           name={tokenData.name}
           description={tokenData.description}
           imageURL={tokenData.image}
+          externalURL={tokenData.external_url}
         />
         {isLockManager && <ShareFlocker network={137} address={lockAddress} />}
         {!isLockManager && !isMember && (
@@ -91,29 +90,65 @@ const IndexPage: NextPage<Props> = ({ network, lockAddress, tokenData }) => {
 };
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  try {
-    const lockAddress = ctx.query.lock?.toString();
-    const network = Number(ctx.query.network);
-    const service = new LocksmithService(undefined, app.locksmith);
-    const response = await service.lockMetadata(network, lockAddress!);
-    const tokenData = response.data;
+  const lockAddress = ctx.query.lock?.toString();
+  const network = Number(ctx.query.network);
+  const service = new LocksmithService(undefined, app.locksmith);
 
-    return {
-      props: {
-        // Serialize undefined into null
-        tokenData: Object.entries(tokenData).reduce((acc, [key, value]) => {
-          acc[key] = value || null;
-          return acc;
-        }, {} as any),
-        lockAddress,
-        network,
-      },
-    };
-  } catch (error) {
+  if (!lockAddress) {
     return {
       notFound: true,
     };
   }
+
+  const tokenData = await service
+    .lockMetadata(network, lockAddress!)
+    .then((response) => {
+      return response.data;
+    })
+    .catch(async (error) => {
+      console.error(error.message);
+
+      const lock = await getLock(network, lockAddress);
+      if (!lock) {
+        return {
+          notFound: true,
+        };
+      }
+
+      return {
+        name: lock.name,
+        attributes: [],
+        description: "",
+      };
+    })
+    .catch(async (error) => {
+      console.error(error.message);
+      // Can we get name from contract itself?
+      const lock = await getLock(network, lockAddress);
+      if (!lock) {
+        return {
+          notFound: true,
+        };
+      }
+      return {
+        name: lock.name,
+        image: "DEFAULT",
+        attributes: [],
+        description: "",
+      };
+    });
+
+  return {
+    props: {
+      // Serialize undefined into null
+      tokenData: Object.entries(tokenData).reduce((acc, [key, value]) => {
+        acc[key] = value || null;
+        return acc;
+      }, {} as any),
+      lockAddress,
+      network,
+    },
+  };
 };
 
 export default IndexPage;

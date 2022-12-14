@@ -1,10 +1,13 @@
+import ReactMarkdown from "react-markdown";
+
 interface Props {
   description?: string;
   name: string;
   imageURL?: string;
+  externalURL?: string;
 }
 
-export function Profile({ description, name, imageURL }: Props) {
+export function Profile({ description, name, imageURL, externalURL }: Props) {
   return (
     <header className="flex flex-col items-center gap-2 text-center">
       <div className="flex flex-col items-center gap-2">
@@ -17,9 +20,25 @@ export function Profile({ description, name, imageURL }: Props) {
             alt={name}
           />
         )}
-        {name && <h1 className="text-lg font-bold sm:text-xl">@{name}</h1>}
+        {name && (
+          <h1 className="text-lg font-bold sm:text-xl whitespace-nowrap ">
+            {name} {externalURL && <a href={externalURL}>🔗</a>}
+          </h1>
+        )}
       </div>
-      {description && <p className="text-gray-600">{description}</p>}
+      {description && (
+        <div className="text-gray-600">
+          <ReactMarkdown
+            components={{
+              a: ({ node, ...props }) => {
+                return <a className="underline" {...props} />;
+              },
+            }}
+          >
+            {description}
+          </ReactMarkdown>
+        </div>
+      )}
     </header>
   );
 }

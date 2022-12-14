@@ -31,6 +31,7 @@
     "react-hot-toast": "^2.4.0",
     "react-hotjar": "^5.2.0",
     "react-icons": "^4.6.0",
+    "react-markdown": "^8.0.4",
     "react-use-clipboard": "^1.0.9",
     "tailwind-merge": "^1.8.0",
     "twitter-api-v2": "^1.12.9",

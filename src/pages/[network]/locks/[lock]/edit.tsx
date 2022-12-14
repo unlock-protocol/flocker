@@ -31,6 +31,7 @@ import { useLockMetadata } from "../../../../hooks/useLockMetadata";
 import { FormLink } from "../../../../components/FormLink";
 import useClipboard from "react-use-clipboard";
 import { getLock } from "../../../../hooks/useLock";
+import Link from "next/link";
 
 interface ContractDetailsProps {
   lock: string;
@@ -245,9 +246,21 @@ const EditPage: NextPage = () => {
       <ColumnLayout>
         <h2 className="text-2xl font-extrabold">Your Flocker!</h2>
 
-        <p className="block text-lg text-gray-500 sm:text-xl mb-5">
+        <p className="block text-lg text-gray-500 mb-5">
           Set links where your flock (people who own one of your membership NFT)
           can access the content you publish for them in the web3 world.
+        </p>
+
+        <p className="block text-md mb-5">
+          Update the name, description and image by using the{" "}
+          <Link
+            className="underline"
+            target="_blank"
+            href={`https://app.unlock-protocol.com/locks/lock?address=${lockAddress}&network=${network}`}
+          >
+            Unlock Dashboard
+          </Link>
+          .
         </p>
 
         <ul className="mb-8 text-sm flex flex-col space-y-3 sm:space-y-0">
