@@ -158,3 +158,28 @@ export const isUserLockManager = (lock: any, user: string) => {
       .indexOf(user.toLowerCase()) >= 0
   );
 };
+
+export const getTwitterHandle = (link?: string) => {
+  try {
+    if (!link) {
+      return;
+    }
+    const pattern = new URLPattern("https://twitter.com/:username");
+    const matched = pattern.exec(link);
+    return matched?.pathname.groups.username;
+  } catch {}
+};
+
+export const linksFromTokenData: any = (tokenData: TokenData) => {
+  return (tokenData.attributes || [])
+    .filter(
+      (item) =>
+        typeof item.value === "string" &&
+        !item.max_value &&
+        item.value.startsWith("https://")
+    )
+    .reduce<Record<string, string>>((acc, item) => {
+      acc[item.trait_type] = item.value?.toString();
+      return acc;
+    }, {});
+};
