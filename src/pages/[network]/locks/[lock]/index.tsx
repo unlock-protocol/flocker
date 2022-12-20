@@ -10,11 +10,10 @@ import { useAuth } from "../../../../hooks/useAuth";
 import { BecomeMember } from "../../../../components/BecomeMember";
 import { EditFlocker } from "../../../../components/EditFlocker";
 import { useMembership } from "../../../../hooks/useMembership";
-import { useLock } from "../../../../hooks/useLock";
 import { ShareFlocker } from "../../../../components/ShareFlocker";
-import { Members } from "../../../../components/Members";
 import { flock } from "../../../../utils/getServerSideProps";
 import FlockHead from "../../../../components/FlockHead";
+
 interface Props {
   network: number;
   lockAddress: string;
@@ -22,7 +21,7 @@ interface Props {
   lock: any;
 }
 
-const IndexPage: NextPage<Props> = ({
+export const IndexPage: NextPage<Props> = ({
   network,
   lockAddress,
   tokenData,

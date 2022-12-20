@@ -2,19 +2,16 @@ import { LocksmithService } from "@unlock-protocol/unlock-js";
 import { GetServerSideProps } from "next";
 import { app } from "../config/app";
 import { getLock } from "../hooks/useLock";
+import { ethers } from "ethers";
 
-export const flock: GetServerSideProps = async (ctx) => {
-  const lockAddress = ctx.query.lock?.toString();
-  const network = Number(ctx.query.network);
+const getFlockProps: GetServerSideProps = async (
+  lockAddress: string,
+  network: number
+) => {
   const service = new LocksmithService(undefined, app.locksmith);
 
-  if (!lockAddress) {
-    return {
-      notFound: true,
-    };
-  }
-
   const lock = await getLock(network, lockAddress);
+
   if (!lock) {
     return {
       notFound: true,
@@ -57,4 +54,44 @@ export const flock: GetServerSideProps = async (ctx) => {
       lock,
     },
   };
+};
+
+// props for the "full" path /<network>/locks/<address>
+export const flock: GetServerSideProps = async (ctx) => {
+  const lockAddress = ctx.query.lock?.toString();
+  const network = Number(ctx.query.network);
+
+  if (!lockAddress || !network) {
+    return {
+      notFound: true,
+    };
+  }
+
+  return getFlockProps(lockAddress, network);
+};
+
+// props for the "ens" path /<ens name>
+// Let's resolve the ENS for `app.flocker`
+export const ens: GetServerSideProps = async (ctx) => {
+  const name = ctx.query.network;
+  const provider = new ethers.providers.JsonRpcProvider(
+    "https://rpc.unlock-protocol.com/1"
+  );
+  const resolver = await provider.getResolver(`${name}.eth`);
+  if (!resolver) {
+    return {
+      notFound: true,
+    };
+  }
+  const flocker = await resolver.getText("app.flocker");
+  const [_, network, lockAddress] = flocker.match(
+    /eip155:([0-9]*):(0x[a-fA-F0-9]{40})/
+  );
+  if (!network || !lockAddress) {
+    return {
+      notFound: true,
+    };
+  }
+
+  return getFlockProps(lockAddress, parseInt(network, 10));
 };
