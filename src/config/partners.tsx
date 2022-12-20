@@ -29,6 +29,13 @@ const partners = [
     youtube: "https://www.youtube.com/embed/LEfQ8zGWT4c",
   },
   {
+    name: "Beem",
+    attribute: "beem",
+    url: "https://www.beem.xyz/",
+    description: `Beem is a web3 video live streaming & distribution interface. You can start a stream and token gate in seconds!`,
+    youtube: "https://www.youtube.com/embed/FyejsCV2eE0",
+  },
+  {
     name: "Geneva",
     attribute: "geneva",
     url: "http://geneva.com",
