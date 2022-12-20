@@ -110,7 +110,7 @@ const EditPage: NextPage = () => {
       if (!twitterUsername && lockAddress) {
         // We don't have a username, which is... annoying!
         // But we can get it from the contract
-        const lock = await getLock(app.defaultNetwork, lockAddress);
+        const lock = await getLock(network, lockAddress);
         if (lock?.name) {
           twitterUsername = lock.name;
         }

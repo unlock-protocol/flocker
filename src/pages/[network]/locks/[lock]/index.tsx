@@ -41,12 +41,14 @@ export const IndexPage: NextPage<Props> = ({
       lock={lock}
       links={links}
     >
-      {isLockManager && <ShareFlocker network={137} address={lockAddress} />}
+      {isLockManager && (
+        <ShareFlocker network={network} address={lockAddress} />
+      )}
       {!isLockManager && !isMember && (
-        <BecomeMember network={137} address={lockAddress} />
+        <BecomeMember network={network} address={lockAddress} />
       )}
       <ProfileLinks hide={!isMember && !isLockManager} links={links} />
-      {isLockManager && <EditFlocker network={137} address={lockAddress} />}
+      {isLockManager && <EditFlocker network={network} address={lockAddress} />}
     </FlockHead>
   );
 };

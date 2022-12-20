@@ -13,11 +13,11 @@ export const EditFlocker = ({ address, network }: EditFlockerProps) => {
   return (
     <div className="flex flex-col">
       <Link
-        href={`/${app.defaultNetwork}/locks/${address}/edit`}
+        href={`/${network}/locks/${address}/edit`}
         className={`${buildButtonClasses()} self-end`}
         onClick={(event) => {
           event.preventDefault();
-          router.push(`/${app.defaultNetwork}/locks/${address}/edit`);
+          router.push(`/${network}/locks/${address}/edit`);
         }}
       >
         <EditIcon />

@@ -49,7 +49,7 @@ export const ShareFlocker = ({ address, network }: ShareFlockerProps) => {
       </textarea>
 
       <Link
-        href={`/${app.defaultNetwork}/locks/${address}/edit`}
+        href={`/${network}/locks/${address}/edit`}
         className={`w-40 self-end mt-3 ${buildButtonClasses()}`}
         onClick={tweetThis}
       >
