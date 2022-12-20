@@ -4,10 +4,7 @@ import { app } from "../config/app";
 import { getLock } from "../hooks/useLock";
 import { ethers } from "ethers";
 
-const getFlockProps: GetServerSideProps = async (
-  lockAddress: string,
-  network: number
-) => {
+const getFlockProps: any = async (lockAddress: string, network: number) => {
   const service = new LocksmithService(undefined, app.locksmith);
 
   const lock = await getLock(network, lockAddress);
@@ -84,9 +81,15 @@ export const ens: GetServerSideProps = async (ctx) => {
     };
   }
   const flocker = await resolver.getText("app.flocker");
-  const [_, network, lockAddress] = flocker.match(
-    /eip155:([0-9]*):(0x[a-fA-F0-9]{40})/
-  );
+  const match = flocker.match(/eip155:([0-9]*):(0x[a-fA-F0-9]{40})/);
+  if (!match || match.length == 0) {
+    return {
+      notFound: true,
+    };
+  }
+
+  const network = match[1];
+  const lockAddress = match[2];
   if (!network || !lockAddress) {
     return {
       notFound: true,
