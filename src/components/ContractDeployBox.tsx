@@ -136,6 +136,7 @@ export function ContractDeployBox({ twitterUsername }: ContractDeployBoxProps) {
             loading={isContractDeploying}
             onClick={() => {
               deployContract({
+                expirationDuration: (60 * 60 * 24 * 30).toString(), // 1 month!
                 creator: user,
                 name: `@${twitterUsername}`,
                 keyPrice: "0", // Free by default!
