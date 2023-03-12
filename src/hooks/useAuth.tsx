@@ -1,28 +1,23 @@
 import { useRouter } from "next/router";
-import { useEffect, useMemo, useCallback, useState } from "react";
+import { useEffect, useCallback, useState } from "react";
 import { ethers } from "ethers";
-import useLocalStorageState from "use-local-storage-state";
 import { LocksmithService } from "@unlock-protocol/unlock-js";
 import { storage } from "../config/storage";
 import { app } from "../config/app";
+import {
+  CURRENT_ACCOUNT_KEY,
+  removeAccessToken,
+  saveAccessToken,
+} from "../utils/session";
+import { useSession } from "./useSession";
 
 export function useAuth() {
   const router = useRouter();
   const code = router.query?.code?.toString();
   const [isAuthenticating, setIsAuthenticating] = useState(true);
-  const [user, setUser] = useLocalStorageState("user", {
-    defaultValue: "",
-  });
-
-  const [accessToken, setAccessToken] = useLocalStorageState("accessToken", {
-    defaultValue: "",
-  });
-
-  const [refreshToken, setRefreshToken] = useLocalStorageState("refreshToken", {
-    defaultValue: "",
-  });
-
+  const { data: user, refetch: refetchUser } = useSession();
   const isAuthenticated = !!user;
+
   const authenticate = useCallback(
     async (_code: string) => {
       const code = JSON.parse(Buffer.from(_code, "base64").toString());
@@ -39,21 +34,22 @@ export function useAuth() {
         throw new Error("Failed to login. Try again");
       }
 
-      const { refreshToken, accessToken } = response.data;
+      const { accessToken, walletAddress } = response.data;
+      localStorage.setItem(CURRENT_ACCOUNT_KEY, walletAddress!);
+      saveAccessToken({
+        accessToken,
+        walletAddress: walletAddress!,
+      });
 
-      setRefreshToken(refreshToken);
-      setAccessToken(accessToken);
-      setUser(user);
-
+      await refetchUser();
       return {
         message,
         signature,
-        refreshToken,
         accessToken,
         user,
       };
     },
-    [setAccessToken, setRefreshToken, setUser]
+    [refetchUser]
   );
 
   useEffect(() => {
@@ -95,16 +91,14 @@ export function useAuth() {
     window.location.href = url.toString();
   };
 
-  const logout = () => {
-    setUser("");
-    setAccessToken("");
-    setRefreshToken("");
+  const logout = async () => {
+    await storage.revoke().catch(console.error);
+    removeAccessToken();
+    await refetchUser();
   };
 
   return {
     user,
-    accessToken,
-    refreshToken,
     storage,
     login,
     logout,

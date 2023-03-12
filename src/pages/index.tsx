@@ -45,7 +45,9 @@ export default function Home() {
         </header>
 
         <div className="grid gap-6 mt-6">
-          {isAuthenticated && !twitterUsername && <ContractsView user={user} />}
+          {isAuthenticated && !twitterUsername && (
+            <ContractsView user={user!} />
+          )}
 
           {!twitterUsername && (
             <SelectTwitterProfile
@@ -108,8 +110,7 @@ const items = [
     Icon: EditIcon,
   },
   {
-    text:
-      "Share the link to claim your membership card with your Twitter followers",
+    text: "Share the link to claim your membership card with your Twitter followers",
     description:
       "Your followers can claim your free membership with the link. The membership will be in the form of an NFT.",
     Icon: ShareIcon,

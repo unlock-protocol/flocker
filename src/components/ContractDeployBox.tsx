@@ -1,19 +1,14 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { Button } from "./Button";
-import { Input } from "./Input";
 import { useAuth } from "../hooks/useAuth";
-import { SiTwitter as TwitterIcon } from "react-icons/si";
 // @ts-expect-error - no typings.
 import ReCaptcha from "react-google-recaptcha";
 import { app } from "../config/app";
 import { useMutation } from "@tanstack/react-query";
 import { LocksmithService, Web3Service } from "@unlock-protocol/unlock-js";
 import { networks } from "@unlock-protocol/networks";
-import { ethers } from "ethers";
 import { useRouter } from "next/router";
 import { toast } from "react-hot-toast";
-import { FiExternalLink as ExternalLinkIcon } from "react-icons/fi";
-import { minifyAddress } from "../utils";
 import { LockAddress } from "./LockAddress";
 
 interface ContractDeployBoxProps {

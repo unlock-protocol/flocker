@@ -1,22 +1,6 @@
 import { app } from "../config/app";
 import partners from "../config/partners";
 
-export const createLocalStorageValue = <T = string>(key: string) => {
-  const getKey = (): T | undefined => {
-    const item = window.localStorage.getItem(key);
-    if (item) {
-      return JSON.parse(item);
-    }
-  };
-  const setKey = (value: T | undefined) => {
-    if (!value) {
-      return;
-    }
-    window.localStorage.setItem(key, JSON.stringify(value));
-  };
-  return [getKey, setKey] as const;
-};
-
 interface Options {
   lockAddress: string;
   network: number;

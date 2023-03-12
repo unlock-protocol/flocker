@@ -27,12 +27,10 @@ export const IndexPage: NextPage<Props> = ({
   tokenData,
   lock,
 }) => {
-  const { isAuthenticated, user } = useAuth();
-  const { isMember, isLoading } = useMembership(network, lockAddress, user);
-
+  const { user } = useAuth();
+  const { isMember } = useMembership(network, lockAddress, user!);
   const links = linksFromTokenData(tokenData);
-
-  const isLockManager = isUserLockManager(lock, user);
+  const isLockManager = isUserLockManager(lock, user!);
 
   return (
     <FlockHead

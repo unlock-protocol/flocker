@@ -17,7 +17,6 @@ interface Props {
 }
 
 export function ContractsView({ user }: Props) {
-  const router = useRouter();
   const { data: locks, isLoading: isLocksLoading } = useQuery(
     ["locks", user],
     async () => {
@@ -100,7 +99,7 @@ export function ContractsView({ user }: Props) {
                       {lock.metadata && (
                         <Link
                           href={`/${app.defaultNetwork}/locks/${lock.address}`}
-                          className="basis-1/2 inline-flex items-center gap-2 px-2 py-1 font-medium text-white bg-blue-500 rounded-lg hover:bg-blue-400"
+                          className="inline-flex items-center gap-2 px-2 py-1 font-medium text-white bg-blue-500 rounded-lg basis-1/2 hover:bg-blue-400"
                         >
                           <PreviewIcon />
                           View
@@ -109,7 +108,7 @@ export function ContractsView({ user }: Props) {
 
                       <Link
                         href={`/${app.defaultNetwork}/locks/${lock.address}/edit`}
-                        className="basis-1/2 inline-flex items-center gap-2 px-2 py-1 font-medium text-white bg-blue-500 rounded-lg hover:bg-blue-400"
+                        className="inline-flex items-center gap-2 px-2 py-1 font-medium text-white bg-blue-500 rounded-lg basis-1/2 hover:bg-blue-400"
                       >
                         <EditIcon />
                         Configure
