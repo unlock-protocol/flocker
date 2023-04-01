@@ -139,7 +139,7 @@ export const isUserLockManager = (lock: any, user: string) => {
   return (
     lock?.lockManagers
       .map((manager: string) => manager.toLowerCase())
-      .indexOf(user.toLowerCase()) >= 0
+      .indexOf(user?.toLowerCase()) >= 0
   );
 };
 
